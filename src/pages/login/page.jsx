@@ -7,7 +7,7 @@ function LoginPage() {
             <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-2xl">
                 {/* Logo */}
                 <div className="flex justify-center mb-6">
-                    <img src={Logo} alt="Project Logo" className="h-16" />
+                    <img src={Logo} alt="Logo" className="h-16" />
                 </div>
 
                 {/* Title */}

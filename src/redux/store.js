@@ -1,9 +1,17 @@
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit';
+import createSagaMiddleware from 'redux-saga';
+import authReducer from '../features/authentication/authenticationSlice';
+import rootSaga from '../features/authentication/authenticationSaga';
 
-import rootReducer from './rootReducer';
+const sagaMiddleware = createSagaMiddleware();
+const store = configureStore({
+    reducer: {
+        auth: authReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+});
 
-const composedEnhancer = composeWithDevTools();
-const store = createStore(rootReducer, undefined, composedEnhancer);
+sagaMiddleware.run(rootSaga);
 
 export default store;
