@@ -9,12 +9,10 @@ function LoginPage() {
                 <div className="flex justify-center mb-6">
                     <img src={Logo} alt="Logo" className="h-16" />
                 </div>
-
                 {/* Title */}
                 <h1 className="mb-6 text-2xl font-semibold text-center text-gray-800">
                     Đăng nhập
                 </h1>
-
                 {/* Form */}
                 <Form />
             </div>
