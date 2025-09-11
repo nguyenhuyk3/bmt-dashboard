@@ -7,7 +7,7 @@ import ROUTES from "./utils/routes";
 
 export default function App() {
   return (
-    <>
+    <div className="">
       <BrowserRouter>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
@@ -31,6 +31,6 @@ export default function App() {
           </Route> */}
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }

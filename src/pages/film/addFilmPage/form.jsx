@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FileUpload, GenreSelect, InputField, TextareaField } from "../components/index";
+
+import { FileUpload, GenreSelect, InputField, TextareaField } from "../../../components/index";
 
 export default function AddFilmForm() {
     const [poster, setPoster] = useState(null);

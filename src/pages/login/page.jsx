@@ -1,9 +1,19 @@
+import { useEffect } from "react";
+
 import Logo from "../../assets/react.svg";
-import Form from "./components";
+import LoginForm from "./form";
 
 function LoginPage() {
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     return (
-        <div className="flex items-center justify-center h-screen overflow-hidden bg-gray-100">
+        <div className="flex items-center justify-center h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-2xl">
                 {/* Logo */}
                 <div className="flex justify-center mb-6">
@@ -14,7 +24,7 @@ function LoginPage() {
                     Đăng nhập
                 </h1>
                 {/* Form */}
-                <Form />
+                <LoginForm />
             </div>
         </div>
     );
