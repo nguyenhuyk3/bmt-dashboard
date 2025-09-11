@@ -6,7 +6,6 @@ export default function MainLayout() {
         <div className="flex">
             {/* Sidebar */}
             <Sidebar />
-
             {/* Nội dung thay đổi */}
             <div className="flex-1 min-h-screen p-6 bg-gray-100">
                 <Outlet />

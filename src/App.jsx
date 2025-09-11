@@ -3,9 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./App.css";
-import LoginPage from "./pages/login/page";
-import ProtectedRoute from "./components/ProtectedRoute";
-import MainLayout from "./layouts/MainLayout";
+import ROUTES from "./utils/routes";
 
 export default function App() {
   return (
@@ -13,15 +11,24 @@ export default function App() {
       <BrowserRouter>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          {ROUTES.map(({ path, element, children }) => (
+            <Route key={path} path={path} element={element}>
+              {children &&
+                children.map((child) => (
+                  <Route key={child.path} path={child.path} element={child.element} />
+                ))}
+            </Route>
+          ))}
+
+          {/* <Route path="/login" element={<LoginPage />} />
           <Route path="/"
             element={
               <ProtectedRoute>
                 <MainLayout />
               </ProtectedRoute>
             }>
-            <Route path="/l" element={<LoginPage />} />
-          </Route>
+            <Route path="/film/add" element={<AddFilmPage />} />
+          </Route> */}
         </Routes>
       </BrowserRouter>
     </>

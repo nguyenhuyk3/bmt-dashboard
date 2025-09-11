@@ -34,10 +34,10 @@ export default function Sidebar() {
                     {openFilmOptions && (
                         <div className="mt-1 ml-4 space-y-1">
                             <Link
-                                to="/settings/profile"
+                                to="/film/add"
                                 className="block p-2 text-sm rounded hover:bg-gray-700"
                             >
-                                Profile
+                                Thêm phim
                             </Link>
                             <Link
                                 to="/settings/account"
