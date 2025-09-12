@@ -13,13 +13,14 @@ const genreNames = {
     crime: "Hình sự",
 };
 
-export default function GenreSelect({ selectedGenres, setSelectedGenres, required }) {
+export default function GenreSelector({ selectedGenres, setSelectedGenres, error, ...props }) {
     const handleChange = (e) => {
         const value = e.target.value;
 
         if (value && !selectedGenres.includes(value)) {
             setSelectedGenres([...selectedGenres, value]);
         }
+
         e.target.value = "";
     };
 
@@ -29,12 +30,23 @@ export default function GenreSelect({ selectedGenres, setSelectedGenres, require
 
     return (
         <div className="w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-                Thể loại  {required && <span className="text-red-500">*</span>}
+            <label
+                htmlFor="genreSelector"
+                className="block mb-2 text-sm font-medium text-gray-700 hover:cursor-pointer"
+            >
+                Thể loại <span className="text-red-500">*</span>
             </label>
+
             <select
+                id="genreSelector"
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                className={`
+                    w-full px-3 py-2 border rounded-md shadow-sm appearance-none hover:cursor-pointer focus:outline-none
+                    ${error
+                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"}
+                `}
+                {...props}
             >
                 <option value=""> Chọn thể loại... </option>
                 {Object.entries(genreNames).map(([value, label]) => (
@@ -43,6 +55,10 @@ export default function GenreSelect({ selectedGenres, setSelectedGenres, require
                     </option>
                 ))}
             </select>
+
+            {error && (
+                <p className="mt-1 text-sm text-red-500">{error}</p>
+            )}
 
             <div className="flex flex-wrap gap-2 mt-3">
                 {selectedGenres.map((genre) => (

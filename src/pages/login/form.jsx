@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { loginRequest } from "../../features/slices/index";
-import {InputField, PasswordInput} from "../../components/index";
+import { InputField, PasswordInput } from "../../components/index";
 
 
 function Button({ children, onClick, type = "button" }) {

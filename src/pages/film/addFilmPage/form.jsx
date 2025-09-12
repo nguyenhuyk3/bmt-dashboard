@@ -1,48 +1,184 @@
 import { useState } from "react";
-
-import { FileUpload, GenreSelect, InputField, TextareaField } from "../../../components/index";
+import { toast } from "react-toastify";
+import { FileUpload, GenreSelector, InputField, TextareaField } from "../../../components/index";
 
 export default function AddFilmForm() {
     const [poster, setPoster] = useState(null);
     const [trailer, setTrailer] = useState(null);
+    const [posterPreview, setPosterPreview] = useState(null);
+    const [trailerPreview, setTrailerPreview] = useState(null);
     const [selectedGenres, setSelectedGenres] = useState([]);
+    const [errors, setErrors] = useState({});
+
+    const handlePosterChange = (e) => {
+        const file = e.target.files[0];
+        setPoster(file);
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPosterPreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPosterPreview(null);
+        }
+    };
+
+    const handleTrailerChange = (e) => {
+        const file = e.target.files[0];
+        setTrailer(file);
+        
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setTrailerPreview(url);
+        } else {
+            setTrailerPreview(null);
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        
         const formData = {
             title: e.target.title.value,
             description: e.target.description.value,
-            release_date: e.target.release_date.value,
+            releaseDate: e.target.releaseDate.value,
             duration: e.target.duration.value,
             poster,
             trailer,
             genres: selectedGenres,
         };
 
+        const newErrors = {};
+
+        if (!formData.title) {
+            newErrors.title = "Tên phim bắt buộc!!";
+        }
+        if (!formData.description) {
+            newErrors.description = "Mô tả bắt buộc!!";
+        }
+        if (!formData.releaseDate) {
+            newErrors.releaseDate = "Ngày phát hành bắt buộc!!";
+        }
+        if (!formData.duration) {
+            newErrors.duration = "Thời lượng bắt buộc!!";
+        }
+        if (!formData.poster) {
+            newErrors.poster = "Poster bắt buộc!!";
+        }
+        if (!formData.trailer) {
+            newErrors.trailer = "Trailer bắt buộc!!";
+        }
+        if (!formData.genres || formData.genres.length === 0) {
+            newErrors.genres = "Thể loại bắt buộc!!";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            toast.error("Vui lòng điền đầy đủ thông tin!!");
+            return;
+        }
+
+        setErrors({});
         console.log("Dữ liệu phim:", formData);
-        alert("Phim đã được thêm thành công! Xem console để kiểm tra dữ liệu.");
+        toast.success("Phim đã được thêm thành công!");
+    };
+
+    const handleReset = () => {
+        setPoster(null);
+        setTrailer(null);
+        setPosterPreview(null);
+        setTrailerPreview(null);
+        setSelectedGenres([]);
+        setErrors({});
+        
+        // Revoke object URL to prevent memory leaks
+        if (trailerPreview) {
+            URL.revokeObjectURL(trailerPreview);
+        }
     };
 
     return (
-        <form className="space-y-6" onSubmit={handleSubmit}>
-            <InputField label="Tên phim" id="title"
-                required placeholder="Nhập tên phim..." />
-            <TextareaField label="Mô tả" id="description"
-                required placeholder="Nhập mô tả phim..." />
-            <InputField label="Ngày phát hành" id="releaseDate" type="date" required />
-            <InputField label="Thời lượng" id="duration" type="time" required />
-            <FileUpload id="poster" label="Poster phim"
-                accept="image/*" required
-                onChange={(e) => setPoster(e.target.files[0])}>
-                <p className="text-sm text-gray-600">Nhấp để chọn ảnh poster</p>
+        <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <InputField
+                label="Tên phim"
+                id="title"
+                type="text"
+                placeholder="Nhập tên phim..."
+                error={errors.title}
+            />
+
+            <TextareaField
+                label="Mô tả"
+                id="description"
+                placeholder="Nhập mô tả phim..."
+                error={errors.description}
+            />
+
+            <InputField
+                label="Ngày phát hành"
+                id="releaseDate"
+                type="date"
+                error={errors.releaseDate}
+            />
+
+            <InputField
+                label="Thời lượng"
+                id="duration"
+                type="time"
+                error={errors.duration}
+            />
+
+            <FileUpload
+                id="poster"
+                label="Poster phim"
+                accept="image/*"
+                onChange={handlePosterChange}
+                error={errors.poster}
+            >
+                {posterPreview ? (
+                    <div className="flex flex-col items-center space-y-2">
+                        <img
+                            src={posterPreview}
+                            alt="Poster preview"
+                            className="object-cover rounded-lg shadow-md max-w-32 max-h-48"
+                        />
+                        <p className="text-sm text-gray-600">Nhấp để thay đổi ảnh poster</p>
+                    </div>
+                ) : (
+                    <p className="text-sm text-gray-600">Nhấp để chọn ảnh poster</p>
+                )}
             </FileUpload>
-            <FileUpload id="trailer" label="Trailer phim"
-                accept="video/*" required
-                onChange={(e) => setTrailer(e.target.files[0])}>
-                <p className="text-sm text-gray-600">Nhấp để chọn video trailer</p>
+
+            <FileUpload
+                id="trailer"
+                label="Trailer phim"
+                accept="video/*"
+                onChange={handleTrailerChange}
+                error={errors.trailer}
+            >
+                {trailerPreview ? (
+                    <div className="flex flex-col items-center space-y-2">
+                        <video
+                            src={trailerPreview}
+                            className="rounded-lg shadow-md max-w-64 max-h-36"
+                            controls
+                            preload="metadata"
+                        />
+                        <p className="text-sm text-gray-600">Nhấp để thay đổi video trailer</p>
+                    </div>
+                ) : (
+                    <p className="text-sm text-gray-600">Nhấp để chọn video trailer</p>
+                )}
             </FileUpload>
-            <GenreSelect selectedGenres={selectedGenres} setSelectedGenres={setSelectedGenres} required />
+
+            <GenreSelector
+                selectedGenres={selectedGenres}
+                setSelectedGenres={setSelectedGenres}
+                error={errors.genres}
+            />
+
             <div className="flex pt-6 space-x-4">
                 <button
                     type="submit"
@@ -51,12 +187,8 @@ export default function AddFilmForm() {
                     Thêm Phim
                 </button>
                 <button
-                    type="reset"
-                    onClick={() => {
-                        setPoster(null);
-                        setTrailer(null);
-                        setSelectedGenres([]);
-                    }}
+                    type="button"
+                    onClick={handleReset}
                     className="flex-1 px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring-2 focus:ring-gray-500"
                 >
                     Làm mới
