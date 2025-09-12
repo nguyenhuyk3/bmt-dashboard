@@ -28,7 +28,7 @@ export default function GenreSelect({ selectedGenres, setSelectedGenres, require
     };
 
     return (
-        <>
+        <div className="w-full">
             <label className="block mb-2 text-sm font-medium text-gray-700">
                 Thể loại  {required && <span className="text-red-500">*</span>}
             </label>
@@ -36,7 +36,7 @@ export default function GenreSelect({ selectedGenres, setSelectedGenres, require
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
             >
-                <option value="">Chọn thể loại...</option>
+                <option value=""> Chọn thể loại... </option>
                 {Object.entries(genreNames).map(([value, label]) => (
                     <option key={value} value={value}>
                         {label}
@@ -61,6 +61,6 @@ export default function GenreSelect({ selectedGenres, setSelectedGenres, require
                     </span>
                 ))}
             </div>
-        </>
+        </div>
     );
 }

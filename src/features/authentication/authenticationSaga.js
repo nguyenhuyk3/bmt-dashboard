@@ -42,8 +42,6 @@ function* handleLogin(action) {
         const { email, password } = action.payload;
         const response = yield call(authenticationApi.login, { email, password });
 
-        console.log(response);
-
         if (response.role === "CUSTOMER") {
             yield put(loginFailure("Tài khoản không hợp lệ"));
         } else {

@@ -1,9 +1,9 @@
 export default function FileUpload({ id, label, accept, onChange, required, children }) {
     return (
-        <>
+        <div className="w-full">
             <label className="block mb-2 text-sm font-medium text-gray-700"
                 htmlFor={id}>
-                {label}  {required && <span className="text-red-500">*</span>}
+                {label}  {required && <span className="text-red-500"> * </span>}
             </label>
             <div className="relative">
                 <input type="file" id={id} accept={accept} className="hidden" onChange={onChange} />
@@ -14,6 +14,6 @@ export default function FileUpload({ id, label, accept, onChange, required, chil
                     {children}
                 </label>
             </div>
-        </>
+        </div>
     );
 }

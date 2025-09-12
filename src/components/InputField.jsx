@@ -2,7 +2,7 @@ export default function InputField({ label, id, required, ...props }) {
     return (
         <div className="w-full">
             <label htmlFor={id} className="block mb-2 text-sm font-medium text-gray-700">
-                {label} {required && <span className="text-red-500">*</span>}
+                {label} {required && <span className="text-red-500"> * </span>}
             </label>
             <input
                 id={id}
