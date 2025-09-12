@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import { loginRequest } from "../../features/authentication/authenticationSlice";
+import { loginRequest } from "../../features/slices/index";
 import {InputField, PasswordInput} from "../../components/index";
 
 

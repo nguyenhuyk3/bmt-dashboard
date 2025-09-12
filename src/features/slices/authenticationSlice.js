@@ -23,6 +23,9 @@ const authSlice = createSlice({
                 tokenType: action.payload.tokenType,
             }
             state.role = action.payload.role;
+
+            localStorage.setItem(import.meta.env.VITE_ACCESS_TOKEN, action.payload.accessToken);
+            localStorage.setItem(import.meta.env.VITE_REFRESH_TOKEN, action.payload.refreshToken);
         },
         loginFailure: (state, action) => {
             state.loading = false;
