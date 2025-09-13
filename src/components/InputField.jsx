@@ -14,12 +14,11 @@ export default function InputField({ label, id, ...props }) {
                         ${props.type !== "text" ? "hover:cursor-pointer" : ""}
                             w-full px-3 py-2 border-2 rounded-md shadow-sm focus:outline-none
                         ${props.error
-                        ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                        : "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"}
+                        ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"}
                 `}
                 {...props}
             />
-
             {props.error && (
                 <p className="mt-2 text-sm text-red-500">{props.error}</p>
             )}

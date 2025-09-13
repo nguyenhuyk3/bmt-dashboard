@@ -1,24 +1,45 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { FileUpload, GenreSelector, InputField, TextareaField } from "../../../components/index";
+import { FileUpload, GenreSelector, InputField, TextareaField, PersonSelector } from "../../../components/index";
 
 export default function AddFilmForm() {
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedDirectors, setSelectedDirectors] = useState([]);
+    const [selectedActors, setSelectedActors] = useState([]);
     const [poster, setPoster] = useState(null);
     const [trailer, setTrailer] = useState(null);
     const [posterPreview, setPosterPreview] = useState(null);
     const [trailerPreview, setTrailerPreview] = useState(null);
-    const [selectedGenres, setSelectedGenres] = useState([]);
     const [errors, setErrors] = useState({});
+    const mockDirectors = [
+        { id: '1', name: 'Nguyễn Văn A', avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random' },
+        { id: '2', name: 'Trần Thị B', avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+B&background=random' },
+        { id: '3', name: 'Lê Văn C', avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+C&background=random' },
+        { id: '4', name: 'Phạm Thị D', avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Thi+D&background=random' },
+        { id: '5', name: 'Hoàng Văn E', avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Van+E&background=random' },
+    ];
+
+    const mockActors = [
+        { id: '1', name: 'Nguyễn Văn A', avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random' },
+        { id: '2', name: 'Trần Thị B', avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+B&background=random' },
+        { id: '3', name: 'Lê Văn C', avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+C&background=random' },
+        { id: '4', name: 'Phạm Thị D', avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Thi+D&background=random' },
+        { id: '5', name: 'Hoàng Văn E', avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Van+E&background=random' },
+    ];
+
 
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
+
         setPoster(file);
-        
+
         if (file) {
             const reader = new FileReader();
+
             reader.onload = (e) => {
                 setPosterPreview(e.target.result);
             };
+
             reader.readAsDataURL(file);
         } else {
             setPosterPreview(null);
@@ -27,10 +48,12 @@ export default function AddFilmForm() {
 
     const handleTrailerChange = (e) => {
         const file = e.target.files[0];
+
         setTrailer(file);
-        
+
         if (file) {
             const url = URL.createObjectURL(file);
+
             setTrailerPreview(url);
         } else {
             setTrailerPreview(null);
@@ -39,40 +62,31 @@ export default function AddFilmForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const formData = {
             title: e.target.title.value,
             description: e.target.description.value,
+            genres: selectedGenres,
+            directors: selectedDirectors,
+            actors: selectedActors,
             releaseDate: e.target.releaseDate.value,
             duration: e.target.duration.value,
             poster,
             trailer,
-            genres: selectedGenres,
         };
 
         const newErrors = {};
 
-        if (!formData.title) {
-            newErrors.title = "Tên phim bắt buộc!!";
-        }
-        if (!formData.description) {
-            newErrors.description = "Mô tả bắt buộc!!";
-        }
-        if (!formData.releaseDate) {
-            newErrors.releaseDate = "Ngày phát hành bắt buộc!!";
-        }
-        if (!formData.duration) {
-            newErrors.duration = "Thời lượng bắt buộc!!";
-        }
-        if (!formData.poster) {
-            newErrors.poster = "Poster bắt buộc!!";
-        }
-        if (!formData.trailer) {
-            newErrors.trailer = "Trailer bắt buộc!!";
-        }
-        if (!formData.genres || formData.genres.length === 0) {
-            newErrors.genres = "Thể loại bắt buộc!!";
-        }
+        if (!formData.title) newErrors.title = "Tên phim bắt buộc!!";
+        if (!formData.description) newErrors.description = "Mô tả bắt buộc!!";
+        if (!formData.genres || formData.genres.length === 0) newErrors.genres = "Thể loại bắt buộc!!";
+        if (!formData.directors || formData.directors.length === 0) newErrors.directors = "Không thể thiếu đạo diễn!!";
+        if (!formData.actors || formData.actors.length === 0) newErrors.actors = "Không thể thiếu diễn viên!!";
+        if (!formData.releaseDate) newErrors.releaseDate = "Ngày phát hành bắt buộc!!";
+        if (!formData.duration) newErrors.duration = "Thời lượng bắt buộc!!";
+        if (!formData.poster) newErrors.poster = "Poster bắt buộc!!";
+        if (!formData.trailer) newErrors.trailer = "Trailer bắt buộc!!";
+
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -92,12 +106,14 @@ export default function AddFilmForm() {
         setTrailerPreview(null);
         setSelectedGenres([]);
         setErrors({});
-        
+
         // Revoke object URL to prevent memory leaks
         if (trailerPreview) {
             URL.revokeObjectURL(trailerPreview);
         }
     };
+
+
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit} noValidate>
@@ -108,28 +124,43 @@ export default function AddFilmForm() {
                 placeholder="Nhập tên phim..."
                 error={errors.title}
             />
-
             <TextareaField
                 label="Mô tả"
                 id="description"
                 placeholder="Nhập mô tả phim..."
                 error={errors.description}
             />
-
+            <GenreSelector
+                selectedGenres={selectedGenres}
+                setSelectedGenres={setSelectedGenres}
+                error={errors.genres}
+            />
+            <PersonSelector
+                selectedPeople={selectedDirectors}
+                setSelectedPeople={setSelectedDirectors}
+                options={mockDirectors}
+                label="Đạo diễn"
+                error={errors.directors}
+            />
+            <PersonSelector
+                selectedPeople={selectedActors}
+                setSelectedPeople={setSelectedActors}
+                options={mockActors}
+                label="Diễn viên"
+                error={errors.actors}
+            />
             <InputField
                 label="Ngày phát hành"
                 id="releaseDate"
                 type="date"
                 error={errors.releaseDate}
             />
-
             <InputField
                 label="Thời lượng"
                 id="duration"
                 type="time"
                 error={errors.duration}
             />
-
             <FileUpload
                 id="poster"
                 label="Poster phim"
@@ -150,7 +181,6 @@ export default function AddFilmForm() {
                     <p className="text-sm text-gray-600">Nhấp để chọn ảnh poster</p>
                 )}
             </FileUpload>
-
             <FileUpload
                 id="trailer"
                 label="Trailer phim"
@@ -172,13 +202,6 @@ export default function AddFilmForm() {
                     <p className="text-sm text-gray-600">Nhấp để chọn video trailer</p>
                 )}
             </FileUpload>
-
-            <GenreSelector
-                selectedGenres={selectedGenres}
-                setSelectedGenres={setSelectedGenres}
-                error={errors.genres}
-            />
-
             <div className="flex pt-6 space-x-4">
                 <button
                     type="submit"
