@@ -108,7 +108,6 @@ export default function PersonSelector({ selectedPeople, setSelectedPeople, opti
                     </div>
                 )}
             </div>
-
             {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
             {/* Selected People Tags */}
             <div className="flex flex-wrap gap-2 mt-3">

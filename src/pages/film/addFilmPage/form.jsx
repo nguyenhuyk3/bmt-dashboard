@@ -9,6 +9,43 @@ import {
 } from "../../../components/index";
 import { fetchFilmProfessionals, addMovieRequest } from "../../../features/slices/index";
 
+function SubmitButton({ loading }) {
+    return (
+        <button
+            type="submit"
+            disabled={loading}
+            className={`
+                flex-1 px-4 py-2 text-white rounded-md focus:ring-2 focus:ring-blue-500
+                ${loading
+                    ? "bg-blue-600 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }
+            `}
+        >
+            {loading ? "Đang thêm phim..." : "Thêm phim"}
+        </button>
+    );
+}
+
+function ResetButton({ loading, onReset }) {
+    return (
+        <button
+            type="button"
+            onClick={onReset}
+            disabled={loading}
+            className={`
+                flex-1 px-4 py-2 rounded-md focus:ring-2 focus:ring-gray-500
+                ${loading
+                    ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                }
+            `}
+        >
+            Làm mới
+        </button>
+    );
+}
+
 export default function AddFilmForm() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedDirectors, setSelectedDirectors] = useState([]);
@@ -27,7 +64,7 @@ export default function AddFilmForm() {
 
     useEffect(() => {
         dispatch(fetchFilmProfessionals());
-    }, [dispatch])
+    }, [dispatch]);
 
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
@@ -80,7 +117,7 @@ export default function AddFilmForm() {
         if (poster) formData.append("image", poster);
         if (trailer) formData.append("video", trailer);
 
-        console.log([...formData.entries()]);
+        // console.log([...formData.entries()]);
 
         const newErrors = {};
 
@@ -127,8 +164,6 @@ export default function AddFilmForm() {
             URL.revokeObjectURL(trailerPreview);
         }
     };
-
-
 
     return (
         <form ref={formRef} className="space-y-6" onSubmit={handleSubmit} noValidate>
@@ -220,34 +255,8 @@ export default function AddFilmForm() {
                 )}
             </FileUpload>
             <div className="flex pt-6 space-x-4">
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={
-                        `flex-1 px-4 py-2 text-white rounded-md focus:ring-2 focus:ring-blue-500
-                        ${loading
-                            ? "bg-blue-600 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700"
-                        }`
-                    }
-                >
-                    {loading ? "Đang thêm phim..." : "Thêm phim"}
-                </button>
-                <button
-                    type="button"
-                    onClick={handleReset}
-                    disabled={loading}
-                    className={
-                        `flex-1 px-4 py-2 rounded-md focus:ring-2 focus:ring-gray-500
-                        ${loading
-                            ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-                            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                        }`
-                    }
-                >
-                    Làm mới
-                </button>
-
+                <SubmitButton loading={loading} />
+                <ResetButton loading={loading} onReset={handleReset} />
             </div>
         </form>
     );

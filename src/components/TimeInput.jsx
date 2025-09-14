@@ -32,6 +32,7 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
         if (val === "") {
             setHour("");
             handleChange("", minute);
+
             return;
         }
 
@@ -40,6 +41,7 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
 
         // Convert sang số
         let num = parseInt(val, 10);
+
         if (num > 23) num = 23;
 
         setHour(num.toString());
@@ -52,12 +54,14 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
         if (val === "") {
             setMinute("");
             handleChange(hour, "");
+
             return;
         }
 
         if (!/^\d+$/.test(val)) return;
 
         let num = parseInt(val, 10);
+
         if (num > 59) num = 59;
 
         setMinute(num.toString());
@@ -73,7 +77,6 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
             >
                 {label} <span className="text-red-500">*</span>
             </label>
-
             <div className="flex items-center gap-2">
                 {/* Hour input */}
                 <input
@@ -101,7 +104,6 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
             ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
                 />
             </div>
-
             {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </div>
     );
