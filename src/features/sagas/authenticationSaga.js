@@ -1,6 +1,9 @@
 import { call, put, takeLatest } from "redux-saga/effects";
+import { toast } from "react-toastify";
+import { Navigate } from "react-router-dom";
+
 import { loginRequest, loginSuccess, loginFailure } from "../slices/index";
-import authenticationApi from "../../api/authenticationApi";
+import { authenticationApi } from "../../api/index";
 
 /*
     Trong Redux-Saga, effect giống như “hướng dẫn” cho middleware saga phải làm gì.
@@ -44,11 +47,17 @@ function* handleLogin(action) {
 
         if (response.role === "CUSTOMER") {
             yield put(loginFailure("Tài khoản không hợp lệ"));
+
+            toast.error("Tài khoản không hợp lệ");
         } else {
             yield put(loginSuccess(response));
+
+            toast.success("Đăng nhập thành công!!");
         }
-    } catch {
-        yield put(loginFailure("Đăng nhập thất bại!!"));
+    } catch (e) {
+        yield put(loginFailure(e.message));
+
+        toast.error("Đăng nhập thất bại!!")
     }
 }
 

@@ -5,6 +5,16 @@
   text-align: center;
 } */
 
+/* Ẩn nút show/hide mặc định của password field trên Edge/Chrome */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none !important;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

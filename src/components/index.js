@@ -5,4 +5,6 @@ export { default as PasswordInput } from "./PasswordInput";
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as Sidebar } from "./Sidebar";
 export { default as TextareaField } from "./TextareaField";
-export {default as PersonSelector} from "./PersonSelector";
+export { default as PersonSelector } from "./PersonSelector";
+export { default as TimeInput } from "./TimeInput";
+export { default as DateInput } from "./DateInput";

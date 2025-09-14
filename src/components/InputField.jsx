@@ -1,6 +1,4 @@
 export default function InputField({ label, id, ...props }) {
-    console.log(props);
-
     return (
         <div className="w-full">
             <label htmlFor={id}
@@ -11,7 +9,7 @@ export default function InputField({ label, id, ...props }) {
             <input
                 id={id}
                 className={`
-                        ${props.type !== "text" ? "hover:cursor-pointer" : ""}
+                        ${props.type === "text" ? "" : "hover:cursor-pointer"}
                             w-full px-3 py-2 border-2 rounded-md shadow-sm focus:outline-none
                         ${props.error
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500"

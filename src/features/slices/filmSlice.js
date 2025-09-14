@@ -14,9 +14,8 @@ const filmSlice = createSlice({
             state.loading = true;
             state.error = null;
         },
-        addMovieSuccess: (state, action) => {
+        addMovieSuccess: (state) => {
             state.loading = false;
-            state.movies.push(action.payload);
         },
         addMovieFailure: (state, action) => {
             state.loading = false;

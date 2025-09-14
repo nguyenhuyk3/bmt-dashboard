@@ -1,45 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
-const genreNames = {
-    action: "Hành động",
-    comedy: "Hài kịch",
-    drama: "Chính kịch",
-    horror: "Kinh dị",
-    romance: "Lãng mạn",
-    thriller: "Ly kỳ",
-    "sci-fi": "Khoa học viễn tưởng",
-    fantasy: "Giả tưởng",
-    animation: "Hoạt hình",
-    documentary: "Tài liệu",
-    adventure: "Phiêu lưu",
-    crime: "Hình sự",
-};
-
-function getGenreColor(genre) {
-    const colors = {
-        action: 'bg-red-500',
-        comedy: 'bg-yellow-500',
-        drama: 'bg-purple-500',
-        horror: 'bg-black',
-        romance: 'bg-pink-500',
-        thriller: 'bg-orange-500',
-        'sci-fi': 'bg-blue-500',
-        fantasy: 'bg-indigo-500',
-        animation: 'bg-green-500',
-        documentary: 'bg-gray-500',
-        adventure: 'bg-emerald-500',
-        crime: 'bg-red-800',
-    };
-    
-    return colors[genre] || 'bg-gray-400';
-}
+import {GENRE_NAMES, getGenreColor} from "../utils/mappers/index";
 
 export default function GenreSelector({ selectedGenres, setSelectedGenres, error }) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const dropdownRef = useRef(null);
     // Lọc ra những thể loại chưa được chọn và phù hợp với tìm kiếm
-    const availableGenres = Object.entries(genreNames).filter(
+    const availableGenres = Object.entries(GENRE_NAMES).filter(
         ([key, name]) => !selectedGenres.includes(key) &&
             name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -153,7 +121,7 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                         className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 transition-colors bg-blue-100 rounded-full hover:bg-blue-200"
                     >
                         <div className={`w-2 h-2 rounded-full mr-2 ${getGenreColor(genre)}`}></div>
-                        {genreNames[genre]}
+                        {GENRE_NAMES[genre]}
                         <button
                             type="button"
                             className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-300 rounded-full p-0.5 transition-colors"

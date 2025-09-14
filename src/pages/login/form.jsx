@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import { loginRequest } from "../../features/slices/index";
 import { InputField, PasswordInput } from "../../components/index";
+import { DEFAULT } from "../../utils/routes"
 
 
 function Button({ children, onClick, type = "button" }) {
@@ -22,8 +23,8 @@ export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
-    const { loading, error, role } = useSelector((state) => state.auth);
-
+    const { loading, role } = useSelector((state) => state.authentication);
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -31,16 +32,10 @@ export default function LoginForm() {
     };
 
     useEffect(() => {
-        if (error) {
-            toast.error(error);
+        if (role) {
+            navigate(DEFAULT);
         }
-    }, [error])
-
-    useEffect(() => {
-        if (role && role !== "CUSTOMER") {
-            toast.success("Đăng nhập thành công!");
-        }
-    }, [role]);
+    }, [role, navigate]);
 
     return (
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -55,7 +50,6 @@ export default function LoginForm() {
             <PasswordInput
                 id="password"
                 label="Mật khẩu"
-                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Nhập mật khẩu"

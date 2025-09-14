@@ -1,32 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
-import { FileUpload, GenreSelector, InputField, TextareaField, PersonSelector } from "../../../components/index";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+    FileUpload, GenreSelector, InputField,
+    TextareaField, PersonSelector, TimeInput,
+    DateInput
+} from "../../../components/index";
+import { fetchFilmProfessionals, addMovieRequest } from "../../../features/slices/index";
 
 export default function AddFilmForm() {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedDirectors, setSelectedDirectors] = useState([]);
     const [selectedActors, setSelectedActors] = useState([]);
+    const [duration, setDuration] = useState("");
+    const [releaseDate, setReleaseDate] = useState("");
     const [poster, setPoster] = useState(null);
     const [trailer, setTrailer] = useState(null);
     const [posterPreview, setPosterPreview] = useState(null);
     const [trailerPreview, setTrailerPreview] = useState(null);
     const [errors, setErrors] = useState({});
-    const mockDirectors = [
-        { id: '1', name: 'Nguyễn Văn A', avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random' },
-        { id: '2', name: 'Trần Thị B', avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+B&background=random' },
-        { id: '3', name: 'Lê Văn C', avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+C&background=random' },
-        { id: '4', name: 'Phạm Thị D', avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Thi+D&background=random' },
-        { id: '5', name: 'Hoàng Văn E', avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Van+E&background=random' },
-    ];
+    const dispatch = useDispatch();
+    const { directors, actors, } = useSelector((state) => state.filmProfessional);
+    const { loading } = useSelector((state) => state.film);
+    const formRef = useRef();
 
-    const mockActors = [
-        { id: '1', name: 'Nguyễn Văn A', avatarUrl: 'https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random' },
-        { id: '2', name: 'Trần Thị B', avatarUrl: 'https://ui-avatars.com/api/?name=Tran+Thi+B&background=random' },
-        { id: '3', name: 'Lê Văn C', avatarUrl: 'https://ui-avatars.com/api/?name=Le+Van+C&background=random' },
-        { id: '4', name: 'Phạm Thị D', avatarUrl: 'https://ui-avatars.com/api/?name=Pham+Thi+D&background=random' },
-        { id: '5', name: 'Hoàng Văn E', avatarUrl: 'https://ui-avatars.com/api/?name=Hoang+Van+E&background=random' },
-    ];
-
+    useEffect(() => {
+        dispatch(fetchFilmProfessionals());
+    }, [dispatch])
 
     const handlePosterChange = (e) => {
         const file = e.target.files[0];
@@ -63,51 +64,65 @@ export default function AddFilmForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const formData = {
-            title: e.target.title.value,
-            description: e.target.description.value,
-            genres: selectedGenres,
-            directors: selectedDirectors,
-            actors: selectedActors,
-            releaseDate: e.target.releaseDate.value,
-            duration: e.target.duration.value,
-            poster,
-            trailer,
-        };
+        const formData = new FormData();
+
+        formData.append("title", e.target.title.value);
+        formData.append("description", e.target.description.value);
+        formData.append("releaseDate", releaseDate);
+        formData.append("duration", duration);
+        selectedGenres.forEach((genre) => {
+            formData.append("genres", genre);
+        });
+        [...selectedDirectors, ...selectedActors].forEach((filmProfessional) => {
+            formData.append("filmProfessionalIds", filmProfessional.id);
+        });
+
+        if (poster) formData.append("image", poster);
+        if (trailer) formData.append("video", trailer);
+
+        console.log([...formData.entries()]);
 
         const newErrors = {};
 
-        if (!formData.title) newErrors.title = "Tên phim bắt buộc!!";
-        if (!formData.description) newErrors.description = "Mô tả bắt buộc!!";
-        if (!formData.genres || formData.genres.length === 0) newErrors.genres = "Thể loại bắt buộc!!";
-        if (!formData.directors || formData.directors.length === 0) newErrors.directors = "Không thể thiếu đạo diễn!!";
-        if (!formData.actors || formData.actors.length === 0) newErrors.actors = "Không thể thiếu diễn viên!!";
-        if (!formData.releaseDate) newErrors.releaseDate = "Ngày phát hành bắt buộc!!";
-        if (!formData.duration) newErrors.duration = "Thời lượng bắt buộc!!";
-        if (!formData.poster) newErrors.poster = "Poster bắt buộc!!";
-        if (!formData.trailer) newErrors.trailer = "Trailer bắt buộc!!";
+        if (!e.target.title.value) newErrors.title = "Tên phim bắt buộc!!";
+        if (!e.target.description.value) newErrors.description = "Mô tả bắt buộc!!";
+        if (selectedGenres.length === 0) newErrors.genres = "Thể loại bắt buộc!!";
+        if (selectedDirectors.length === 0) newErrors.directors = "Không thể thiếu đạo diễn!!";
+        if (selectedActors.length === 0) newErrors.actors = "Không thể thiếu diễn viên!!";
+        if (releaseDate.length === 0) newErrors.releaseDate = "Ngày phát hành là bắt buộc!!";
+        if (duration.length === 0) newErrors.duration = "Thời lượng phim là bắt buộc!!";
+        if (!poster) newErrors.poster = "Poster là bắt buộc!!";
+        if (!trailer) newErrors.trailer = "Trailer là bắt buộc!!";
 
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
+
             toast.error("Vui lòng điền đầy đủ thông tin!!");
+
             return;
         }
 
+        dispatch(addMovieRequest(formData));
+
         setErrors({});
-        console.log("Dữ liệu phim:", formData);
-        toast.success("Phim đã được thêm thành công!");
+
     };
 
     const handleReset = () => {
+        formRef.current.reset(); // reset toàn bộ input mặc định
+
         setPoster(null);
         setTrailer(null);
         setPosterPreview(null);
         setTrailerPreview(null);
         setSelectedGenres([]);
+        setSelectedActors([]);
+        setSelectedDirectors([]);
+        setDuration("");
+        setReleaseDate("");
         setErrors({});
 
-        // Revoke object URL to prevent memory leaks
         if (trailerPreview) {
             URL.revokeObjectURL(trailerPreview);
         }
@@ -116,7 +131,7 @@ export default function AddFilmForm() {
 
 
     return (
-        <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+        <form ref={formRef} className="space-y-6" onSubmit={handleSubmit} noValidate>
             <InputField
                 label="Tên phim"
                 id="title"
@@ -138,27 +153,29 @@ export default function AddFilmForm() {
             <PersonSelector
                 selectedPeople={selectedDirectors}
                 setSelectedPeople={setSelectedDirectors}
-                options={mockDirectors}
+                options={directors}
                 label="Đạo diễn"
                 error={errors.directors}
             />
             <PersonSelector
                 selectedPeople={selectedActors}
                 setSelectedPeople={setSelectedActors}
-                options={mockActors}
+                options={actors}
                 label="Diễn viên"
                 error={errors.actors}
             />
-            <InputField
-                label="Ngày phát hành"
+            <DateInput
                 id="releaseDate"
-                type="date"
+                label="Ngày phát hành"
+                value={releaseDate}
+                onChange={setReleaseDate}
                 error={errors.releaseDate}
             />
-            <InputField
-                label="Thời lượng"
+            <TimeInput
                 id="duration"
-                type="time"
+                label="Thời lượng phim"
+                value={duration}
+                onChange={setDuration}
                 error={errors.duration}
             />
             <FileUpload
@@ -205,17 +222,32 @@ export default function AddFilmForm() {
             <div className="flex pt-6 space-x-4">
                 <button
                     type="submit"
-                    className="flex-1 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500"
+                    disabled={loading}
+                    className={
+                        `flex-1 px-4 py-2 text-white rounded-md focus:ring-2 focus:ring-blue-500
+                        ${loading
+                            ? "bg-blue-600 cursor-not-allowed"
+                            : "bg-blue-600 hover:bg-blue-700"
+                        }`
+                    }
                 >
-                    Thêm Phim
+                    {loading ? "Đang thêm phim..." : "Thêm phim"}
                 </button>
                 <button
                     type="button"
                     onClick={handleReset}
-                    className="flex-1 px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 focus:ring-2 focus:ring-gray-500"
+                    disabled={loading}
+                    className={
+                        `flex-1 px-4 py-2 rounded-md focus:ring-2 focus:ring-gray-500
+                        ${loading
+                            ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                            : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                        }`
+                    }
                 >
                     Làm mới
                 </button>
+
             </div>
         </form>
     );

@@ -1,8 +1,13 @@
 import axiosClient from "./axiosClient";
 
 const filmApi = {
-    addFilm: async (request) => {
-        const response = await axiosClient.post("/film/add", request);
+    addFilm: async (request, accessToken) => {
+        const response = await axiosClient.post("/film", request, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
 
         return response.data.result;
     }
