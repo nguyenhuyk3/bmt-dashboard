@@ -7,7 +7,7 @@ import {
     TextareaField, PersonSelector, TimeInput,
     DateInput
 } from "../../../components/index";
-import { fetchFilmProfessionals, addMovieRequest } from "../../../features/slices/index";
+import { fetchFilmProfessionals, addFilmRequest } from "../../../features/slices/index";
 
 function SubmitButton({ loading }) {
     return (
@@ -83,7 +83,6 @@ export default function AddFilmForm() {
             setPosterPreview(null);
         }
     };
-
     const handleTrailerChange = (e) => {
         const file = e.target.files[0];
 
@@ -97,7 +96,6 @@ export default function AddFilmForm() {
             setTrailerPreview(null);
         }
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -140,12 +138,11 @@ export default function AddFilmForm() {
             return;
         }
 
-        dispatch(addMovieRequest(formData));
+        dispatch(addFilmRequest(formData));
 
         setErrors({});
 
     };
-
     const handleReset = () => {
         formRef.current.reset(); // reset toàn bộ input mặc định
 

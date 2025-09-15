@@ -9,8 +9,8 @@ export default function InputField({ label, id, ...props }) {
             <input
                 id={id}
                 className={`
+                        w-full px-3 py-2 border-2 rounded-md shadow-sm focus:outline-none
                         ${props.type === "text" ? "" : "hover:cursor-pointer"}
-                            w-full px-3 py-2 border-2 rounded-md shadow-sm focus:outline-none
                         ${props.error
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                         : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"}

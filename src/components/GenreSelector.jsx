@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import {GENRE_NAMES, getGenreColor} from "../utils/mappers/index";
+import { GENRE_NAMES, getGenreColor } from "../utils/mappers/index";
 
 export default function GenreSelector({ selectedGenres, setSelectedGenres, error }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
     const removeGenre = (genre) => {
         setSelectedGenres(selectedGenres.filter((g) => g !== genre));
     };
-    
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -57,7 +57,7 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                     `}
                 >
                     <input
-                    id="genreSelector"
+                        id="genreSelector"
                         type="text"
                         placeholder="Tìm kiếm thể loại..."
                         value={searchTerm}
@@ -88,9 +88,8 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                 </div>
                 {/* Dropdown Options */}
                 {isOpen && (
-                    <div className={`absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg ${
-                        availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''
-                    }`}>
+                    <div className={`absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg ${availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''
+                        }`}>
                         {availableGenres.length > 0 ? (
                             availableGenres.map(([key, name]) => (
                                 <div

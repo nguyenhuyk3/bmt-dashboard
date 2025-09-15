@@ -10,7 +10,7 @@ export default function App() {
     <div className="">
       <BrowserRouter>
         <ToastContainer position="top-right" autoClose={3000} />
-        <Routes>
+        {/* <Routes>
           {ROUTES.map(({ path, element, children }) => (
             <Route key={path} path={path} element={element}>
               {children &&
@@ -20,7 +20,7 @@ export default function App() {
             </Route>
           ))}
 
-          {/* <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/"
             element={
               <ProtectedRoute>
@@ -28,7 +28,21 @@ export default function App() {
               </ProtectedRoute>
             }>
             <Route path="/film/add" element={<AddFilmPage />} />
-          </Route> */}
+          </Route>
+        </Routes> */}
+        <Routes>
+          {ROUTES.map(({ path, element, children }) => (
+            <Route key={path} path={path} element={element}>
+              {children &&
+                children.map((child, idx) =>
+                  child.index ? (
+                    <Route key={`index-${idx}`} index element={child.element} />
+                  ) : (
+                    <Route key={child.path} path={child.path} element={child.element} />
+                  )
+                )}
+            </Route>
+          ))}
         </Routes>
       </BrowserRouter>
     </div>

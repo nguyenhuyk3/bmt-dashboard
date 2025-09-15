@@ -2,6 +2,7 @@ import LoginPage from "../pages/login/page";
 import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import AddFilmPage from "../pages/film/addFilmPage/page";
+import FilmDashboard from "../pages/film/filmDashboard/filmDashboard";
 
 export const LOGIN = "/login";
 export const DEFAULT = "/";
@@ -20,6 +21,10 @@ const ROUTES = [
             </ProtectedRoute>
         ),
         children: [
+            {
+                index: true,
+                element: <FilmDashboard />,
+            },
             {
                 path: FILM_ADD,
                 element: <AddFilmPage />,
