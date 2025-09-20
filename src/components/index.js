@@ -9,4 +9,5 @@ export { default as PersonSelector } from "./PersonSelector";
 export { default as TimeInput } from "./TimeInput";
 export { default as DateInput } from "./DateInput";
 export { default as GenreDropdown } from "./GenreDropdown";
-export {default as LoadingScreen} from "./LoadingScreen";
+export { default as LoadingScreen } from "./LoadingScreen";
+export { default as ErrorMessage } from "./ErrorMessage"

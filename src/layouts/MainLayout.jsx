@@ -9,7 +9,7 @@ export default function MainLayout() {
                 <Sidebar />
             </div>
             {/* Nội dung thay đổi */}
-            <div className="flex-1 min-h-screen ml-64 overflow-y-auto bg-gray-100">
+            <div className="flex-1 min-h-screen ml-64 overflow-y-auto bg-white">
                 <Outlet />
             </div>
         </div>

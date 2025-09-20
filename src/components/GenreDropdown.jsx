@@ -66,7 +66,6 @@ export default function GenreDropdown({ selectedGenre, setSelectedGenre }) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
-
             {/* Dropdown Options */}
             {isOpen && (
                 <div className={`absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg ${availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''

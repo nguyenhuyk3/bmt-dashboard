@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllFilmsRequest, setCurrentPage } from "../../../features/slices/index";
 import { SIZE_OF_PAGINATION } from "../../../utils/constants";
 import { GENRE_NAMES, getGenreColor } from '../../../utils/mappers/genre';
-import { GenreDropdown, LoadingScreen } from "../../../components/index";
+import { GenreDropdown, LoadingScreen, ErrorMessage } from "../../../components/index";
 import { timeToMinutes } from "../../../utils/convertors/time";
 
 // Header Component
@@ -75,9 +75,11 @@ const StatsSection = ({ totalFilms }) => {
 
     return (
         <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
-            {statsData.map((stat, index) => (
-                <StatsCard key={index} {...stat} />
-            ))}
+            {
+                statsData.map((stat, index) => (
+                    <StatsCard key={index} {...stat} />
+                ))
+            }
         </div>
     );
 };
@@ -86,8 +88,8 @@ const StatsSection = ({ totalFilms }) => {
 const FilterSection = ({
     selectedGenre,
     setSelectedGenre,
-    selectedStatus,
-    setSelectedStatus,
+    // selectedStatus,
+    // setSelectedStatus,
     sortBy,
     setSortBy
 }) => {
@@ -99,7 +101,7 @@ const FilterSection = ({
                         selectedGenre={selectedGenre}
                         setSelectedGenre={setSelectedGenre}
                     />
-                    <select
+                    {/* <select
                         value={selectedStatus}
                         onChange={(e) => setSelectedStatus(e.target.value)}
                         className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -108,7 +110,7 @@ const FilterSection = ({
                         <option value="showing">Đang chiếu</option>
                         <option value="upcoming">Sắp chiếu</option>
                         <option value="ended">Đã kết thúc</option>
-                    </select>
+                    </select> */}
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value)}
@@ -129,7 +131,7 @@ const FilterSection = ({
 const MovieRow = ({ film }) => {
     return (
         <tr className="hover:bg-gray-50">
-            <td className="px-6 py-4 whitespace-nowrap">
+            <td className="px-6 py-4 overflow-hidden whitespace-nowrap text-ellipsis">
                 <div className="flex items-center">
                     <img
                         className="object-cover w-12 h-16 rounded"
@@ -146,14 +148,18 @@ const MovieRow = ({ film }) => {
             </td>
             <td className="px-6 py-4">
                 <div className="flex flex-wrap gap-1 hover:cursor-pointer">
-                    {film.genres.map((genre, index) => (
-                        <span
-                            key={index}
-                            className={`px-2 py-1 text-xs font-medium rounded-full ${getGenreColor(genre)}`}
-                        >
-                            {GENRE_NAMES[genre]}
-                        </span>
-                    ))}
+                    {
+                        film.genres.map((genre, index) => (
+                            <span
+                                key={index}
+                                className={
+                                    `px-2 py-1 text-xs font-medium rounded-full ${getGenreColor(genre)}`
+                                }
+                            >
+                                {GENRE_NAMES[genre]}
+                            </span>
+                        ))
+                    }
                 </div>
             </td>
             <td className="px-6 py-4 text-sm text-gray-900 whitespace-nowrap">
@@ -184,7 +190,6 @@ const Pagination = ({
     // Tính toán số item hiển thị
     const startItem = currentPage * pageSize + 1;
     const endItem = Math.min((currentPage + 1) * pageSize, totalFilms);
-
     // Tạo array các trang để hiển thị
     const getPageNumbers = () => {
         const pageNumbers = [];
@@ -220,34 +225,45 @@ const Pagination = ({
                         <button
                             onClick={() => !isFirst && onPageChange(currentPage - 1)}
                             disabled={isFirst}
-                            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium rounded-l-md border border-gray-300 ${isFirst
-                                ? 'text-gray-300 bg-gray-100 cursor-not-allowed'
-                                : 'text-gray-500 bg-white hover:bg-gray-50 cursor-pointer'
-                                }`}
+                            className={
+                                `relative inline-flex items-center px-2 py-2 text-sm font-medium rounded-l-md border border-gray-300 
+                                ${isFirst
+                                    ? 'text-gray-300 bg-gray-100 cursor-not-allowed'
+                                    : 'text-gray-500 bg-white hover:bg-gray-50 cursor-pointer'
+                                }`
+                            }
                         >
                             <ChevronLeft className="w-4 h-4" />
                         </button>
                         {/* Page Numbers */}
-                        {getPageNumbers().map((pageNum) => (
-                            <button
-                                key={pageNum}
-                                onClick={() => onPageChange(pageNum)}
-                                className={`relative inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 ${pageNum === currentPage
-                                    ? 'text-white bg-blue-600'
-                                    : 'text-gray-700 bg-white hover:bg-gray-50'
-                                    }`}
-                            >
-                                {pageNum + 1}
-                            </button>
-                        ))}
+                        {
+                            getPageNumbers().map((pageNum) => (
+                                <button
+                                    key={pageNum}
+                                    onClick={() => onPageChange(pageNum)}
+                                    className={
+                                        `relative inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 
+                                        ${pageNum === currentPage
+                                            ? 'text-white bg-blue-600'
+                                            : 'text-gray-700 bg-white hover:bg-gray-50'
+                                        }`
+                                    }
+                                >
+                                    {pageNum + 1}
+                                </button>
+                            ))
+                        }
                         {/* Next Button */}
                         <button
                             onClick={() => !isLast && onPageChange(currentPage + 1)}
                             disabled={isLast}
-                            className={`relative inline-flex items-center px-2 py-2 text-sm font-medium rounded-r-md border border-gray-300 ${isLast
-                                ? 'text-gray-300 bg-gray-100 cursor-not-allowed'
-                                : 'text-gray-500 bg-white hover:bg-gray-50 cursor-pointer'
-                                }`}
+                            className={
+                                `relative inline-flex items-center px-2 py-2 text-sm font-medium rounded-r-md border border-gray-300
+                                ${isLast
+                                    ? 'text-gray-300 bg-gray-100 cursor-not-allowed'
+                                    : 'text-gray-500 bg-white hover:bg-gray-50 cursor-pointer'
+                                }`
+                            }
                         >
                             <ChevronRight className="w-4 h-4" />
                         </button>
@@ -258,8 +274,8 @@ const Pagination = ({
     );
 };
 
-// Movies Table Component
-const MoviesTable = ({ films, paginationProps }) => {
+// Films Table Component
+const FilmsTable = ({ films, paginationProps, error, onRetry, loading }) => {
     return (
         <div className="overflow-hidden bg-white rounded-lg shadow-sm">
             <div className="overflow-x-auto">
@@ -284,13 +300,36 @@ const MoviesTable = ({ films, paginationProps }) => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {films.map((film) => (
-                            <MovieRow key={film.id} film={film} />
-                        ))}
+                        {error ? (
+                            <tr>
+                                <td colSpan="5" className="px-6 py-4">
+                                    <ErrorMessage error={error} onRetry={onRetry} />
+                                </td>
+                            </tr>
+                        ) : loading && films.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="px-6 py-4 text-center">
+                                    <div className="flex items-center justify-center">
+                                        <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
+                                        <span className="ml-2 text-gray-600">Đang tải...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        ) : films.length === 0 ? (
+                            <tr>
+                                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                                    Không có phim nào
+                                </td>
+                            </tr>
+                        ) : (
+                            films.map((film) => (
+                                <MovieRow key={film.id} film={film} />
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
-            <Pagination {...paginationProps} />
+            {!error && <Pagination {...paginationProps} />}
         </div>
     );
 };
@@ -306,14 +345,14 @@ const FilmDashboard = () => {
         pageSize,
         isFirst,
         isLast,
-        loading
+        loading,
+        error
     } = useSelector((state) => state.film);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenre, setSelectedGenre] = useState('');
-    const [selectedStatus, setSelectedStatus] = useState('');
+    // const [selectedStatus, setSelectedStatus] = useState('');
     const [sortBy, setSortBy] = useState('');
-
     // Fetch films khi component mount hoặc khi page thay đổi
     useEffect(() => {
         dispatch(getAllFilmsRequest({
@@ -321,12 +360,10 @@ const FilmDashboard = () => {
             size: SIZE_OF_PAGINATION
         }));
     }, [dispatch, currentPage]);
-
     // Handle page change
     const handlePageChange = (newPage) => {
         dispatch(setCurrentPage(newPage));
     };
-
     // Pagination props
     const paginationProps = {
         currentPage,
@@ -337,13 +374,21 @@ const FilmDashboard = () => {
         isLast,
         onPageChange: handlePageChange
     };
+    const handleRetry = () => {
+        dispatch(getAllFilmsRequest({
+            page: currentPage,
+            size: SIZE_OF_PAGINATION
+        }));
+    };
 
     if (loading && films.length === 0) {
-        return <LoadingScreen />
+        return (
+            <LoadingScreen />
+        )
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="bg-gray-50">
             <DashboardHeader
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -355,15 +400,18 @@ const FilmDashboard = () => {
                 <FilterSection
                     selectedGenre={selectedGenre}
                     setSelectedGenre={setSelectedGenre}
-                    selectedStatus={selectedStatus}
-                    setSelectedStatus={setSelectedStatus}
+                    // selectedStatus={selectedStatus}
+                    // setSelectedStatus={setSelectedStatus}
                     sortBy={sortBy}
                     setSortBy={setSortBy}
                 />
 
-                <MoviesTable
+                <FilmsTable
                     films={films}
                     paginationProps={paginationProps}
+                    error={error}
+                    onRetry={handleRetry}
+                    loading={loading}
                 />
             </div>
         </div>
