@@ -3,10 +3,12 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../layouts/MainLayout";
 import AddFilmPage from "../pages/film/addFilmPage/page";
 import FilmDashboard from "../pages/film/filmDashboard/filmDashboard";
+import EditFilmPage from "../pages/film/editFilmpage/page";
 
 export const LOGIN = "/login";
 export const DEFAULT = "/";
-export const FILM_ADD = "film/add"
+export const FILM_ADD = "film/add";
+export const FILL_EDIT = "film/edit/:id";
 
 const ROUTES = [
     {
@@ -29,6 +31,10 @@ const ROUTES = [
                 path: FILM_ADD,
                 element: <AddFilmPage />,
             },
+            {
+                path: FILL_EDIT,
+                element: <EditFilmPage />
+            }
         ],
     },
 ];

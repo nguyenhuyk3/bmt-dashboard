@@ -23,6 +23,25 @@ const filmApi = {
         });
 
         return response.data.result;
+    },
+    getFilmById: async (request, accessToken) => {
+        const response = await axiosClient.get(`/film/${request.id}`, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+
+        return response.data.result;
+    },
+    updateFilmlById: async (request, accessToken) => {
+        const response = await axiosClient.put("/film", request, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
+
+        return response.data.result;
     }
 }
 

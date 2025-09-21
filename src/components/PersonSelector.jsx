@@ -20,6 +20,7 @@ export default function PersonSelector({ selectedPeople, setSelectedPeople, opti
     const removePerson = (id) => {
         setSelectedPeople(selectedPeople.filter((p) => p.id !== id));
     };
+
     // Đóng dropdown khi click bên ngoài
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -72,7 +73,10 @@ export default function PersonSelector({ selectedPeople, setSelectedPeople, opti
                         className="flex-1 bg-transparent outline-none"
                     />
                     <svg
-                        className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                        className={`
+                            w-4 h-4 transition-transform 
+                            ${isOpen ? 'rotate-180' : ''}
+                            `}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -83,58 +87,67 @@ export default function PersonSelector({ selectedPeople, setSelectedPeople, opti
                 {/* Dropdown Options */}
                 {isOpen && (
                     <div className="absolute z-10 w-full mt-1 overflow-auto bg-white border-2 border-gray-300 rounded-md shadow-lg max-h-60">
-                        {availableOptions.length > 0 ? (
-                            availableOptions.map((person) => (
-                                <div
-                                    key={person.id}
-                                    className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50"
-                                    onClick={() => handleSelectPerson(person)}
-                                >
-                                    {person.avatarUrl && (
-                                        <img
-                                            src={person.avatarUrl}
-                                            alt={person.name}
-                                            className="object-cover w-6 h-6 mr-3 rounded-full"
-                                        />
-                                    )}
-                                    <span className="text-sm text-gray-900">{person.name}</span>
+                        {
+                            availableOptions.length > 0 ? (
+                                availableOptions.map((person) => (
+                                    <div
+                                        key={person.id}
+                                        className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50"
+                                        onClick={() => handleSelectPerson(person)}
+                                    >
+                                        {person.avatarUrl && (
+                                            <img
+                                                src={person.avatarUrl}
+                                                alt={person.name}
+                                                className="object-cover w-6 h-6 mr-3 rounded-full"
+                                            />
+                                        )}
+                                        <span className="text-sm text-gray-900">{person.name}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="px-3 py-2 text-sm text-gray-500">
+                                    {searchTerm ? `Không tìm thấy "${searchTerm}"` : `Không có ${label.toLowerCase()} nào khả dụng`}
                                 </div>
-                            ))
-                        ) : (
-                            <div className="px-3 py-2 text-sm text-gray-500">
-                                {searchTerm ? `Không tìm thấy "${searchTerm}"` : `Không có ${label.toLowerCase()} nào khả dụng`}
-                            </div>
-                        )}
+                            )
+                        }
                     </div>
                 )}
             </div>
             {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
             {/* Selected People Tags */}
             <div className="flex flex-wrap gap-2 mt-3">
-                {selectedPeople.map((person) => (
-                    <span
-                        key={person.id}
-                        className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 transition-colors bg-blue-100 rounded-full hover:bg-blue-200"
-                    >
-                        {person.avatarUrl && (
-                            <img
-                                src={person.avatarUrl}
-                                alt={person.name}
-                                className="object-cover w-4 h-4 mr-2 rounded-full"
-                            />
-                        )}
-                        {person.name}
-                        <button
-                            type="button"
-                            className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-300 rounded-full p-0.5 transition-colors"
-                            onClick={() => removePerson(person.id)}
+                {
+                    selectedPeople.map((person) => (
+                        <span
+                            key={person.id}
+                            className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 transition-colors bg-blue-100 rounded-full hover:bg-blue-200"
                         >
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                    </span>
-                ))}
+                            {
+                                person.avatarUrl && (
+                                    <img
+                                        src={person.avatarUrl}
+                                        alt={person.name}
+                                        className="object-cover w-4 h-4 mr-2 rounded-full"
+                                    />
+                                )
+                            }
+                            {person.name}
+                            <button
+                                type="button"
+                                className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-300 rounded-full p-0.5 transition-colors"
+                                onClick={() => removePerson(person.id)}
+                            >
+                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        </span>
+                    ))
+                }
             </div>
         </div>
     );

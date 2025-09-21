@@ -17,6 +17,7 @@ import { SIZE_OF_PAGINATION } from "../../../utils/constants";
 import { GENRE_NAMES, getGenreColor } from '../../../utils/mappers/genre';
 import { GenreDropdown, LoadingScreen, ErrorMessage } from "../../../components/index";
 import { timeToMinutes } from "../../../utils/convertors/time";
+import { Link } from 'react-router-dom';
 
 // Header Component
 const DashboardHeader = ({ searchTerm, setSearchTerm }) => {
@@ -134,7 +135,7 @@ const MovieRow = ({ film }) => {
             <td className="px-6 py-4 overflow-hidden whitespace-nowrap text-ellipsis">
                 <div className="flex items-center">
                     <img
-                        className="object-cover w-12 h-16 rounded"
+                        className="object-cover w-20 rounded h-28 hover:cursor-pointer"
                         src={film.posterUrl === "NONE" ? "/placeholder-movie.png" : film.posterUrl}
                         alt="Movie poster"
                         onError={(e) => {
@@ -169,10 +170,17 @@ const MovieRow = ({ film }) => {
                 {film.releaseDate}
             </td>
             <td className="px-6 py-4 space-x-2 text-sm font-medium whitespace-nowrap">
-                <button className="text-green-600 hover:text-green-900">
+                <Link
+                    to={`film/edit/${film.id}`}
+                    className="relative inline-block text-green-600 group hover:text-green-900">
                     <Eye className="w-6 h-6" />
-                </button>
+                    {/* Tooltip */}
+                    <span className="absolute px-2 py-1 mt-1 text-xs text-white transition -translate-x-1/2 bg-gray-500 rounded opacity-0 left-1/2 group-hover:opacity-100">
+                        Chỉnh sửa
+                    </span>
+                </Link>
             </td>
+
         </tr>
     );
 };
@@ -300,32 +308,34 @@ const FilmsTable = ({ films, paginationProps, error, onRetry, loading }) => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {error ? (
-                            <tr>
-                                <td colSpan="5" className="px-6 py-4">
-                                    <ErrorMessage error={error} onRetry={onRetry} />
-                                </td>
-                            </tr>
-                        ) : loading && films.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" className="px-6 py-4 text-center">
-                                    <div className="flex items-center justify-center">
-                                        <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
-                                        <span className="ml-2 text-gray-600">Đang tải...</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        ) : films.length === 0 ? (
-                            <tr>
-                                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                                    Không có phim nào
-                                </td>
-                            </tr>
-                        ) : (
-                            films.map((film) => (
-                                <MovieRow key={film.id} film={film} />
-                            ))
-                        )}
+                        {
+                            error ? (
+                                <tr>
+                                    <td colSpan="5" className="px-6 py-4">
+                                        <ErrorMessage error={error} onRetry={onRetry} />
+                                    </td>
+                                </tr>
+                            ) : loading && films.length === 0 ? (
+                                <tr>
+                                    <td colSpan="5" className="px-6 py-4 text-center">
+                                        <div className="flex items-center justify-center">
+                                            <div className="w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin"></div>
+                                            <span className="ml-2 text-gray-600">Đang tải...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : films.length === 0 ? (
+                                <tr>
+                                    <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                                        Không có phim nào
+                                    </td>
+                                </tr>
+                            ) : (
+                                films.map((film) => (
+                                    <MovieRow key={film.id} film={film} />
+                                ))
+                            )
+                        }
                     </tbody>
                 </table>
             </div>

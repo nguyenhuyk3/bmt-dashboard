@@ -48,9 +48,8 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
             {/* Custom Dropdown */}
             <div className="relative">
                 <div
-                    className={`
-                        w-full px-3 py-2 border-2 rounded-md shadow-sm bg-white
-                        flex items-center justify-between
+                    className={
+                        `w-full px-3 py-2 border-2 rounded-md shadow-sm bg-white flex items-center justify-between
                         ${error
                             ? "border-red-500 focus-within:ring-red-500 focus-within:border-red-500"
                             : "border-gray-300 focus-within:ring-blue-500 focus-within:border-blue-500 hover:border-gray-400"}
@@ -74,7 +73,11 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                         className="flex-1 bg-transparent outline-none cursor-text"
                     />
                     <svg
-                        className={`w-4 h-4 transition-transform cursor-pointer ${isOpen ? 'rotate-180' : ''}`}
+                        className={
+                            `w-4 h-4 transition-transform cursor-pointer 
+                            ${isOpen ? 'rotate-180' : ''}
+                            `
+                        }
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -88,50 +91,65 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                 </div>
                 {/* Dropdown Options */}
                 {isOpen && (
-                    <div className={`absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg ${availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''
-                        }`}>
-                        {availableGenres.length > 0 ? (
-                            availableGenres.map(([key, name]) => (
-                                <div
-                                    key={key}
-                                    className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
-                                    onClick={() => handleSelectGenre(key)}
-                                >
-                                    <div className="flex items-center">
-                                        <div className={`w-3 h-3 rounded-full mr-3 ${getGenreColor(key)}`}></div>
-                                        <span className="text-sm text-gray-900">{name}</span>
+                    <div className={
+                        `absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg 
+                        ${availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''}
+                        `
+                    }>
+                        {
+                            availableGenres.length > 0 ? (
+                                availableGenres.map(([key, name]) => (
+                                    <div
+                                        key={key}
+                                        className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
+                                        onClick={() => handleSelectGenre(key)}
+                                    >
+                                        <div className="flex items-center">
+                                            <div className={`w-3 h-3 rounded-full mr-3 ${getGenreColor(key)}`}></div>
+                                            <span className="text-sm text-gray-900">{name}</span>
+                                        </div>
                                     </div>
+                                ))
+                            ) : (
+                                <div className="px-3 py-2 text-sm text-gray-500 rounded-md">
+                                    {searchTerm ? `Không tìm thấy "${searchTerm}"` : "Không có thể loại nào khả dụng"}
                                 </div>
-                            ))
-                        ) : (
-                            <div className="px-3 py-2 text-sm text-gray-500 rounded-md">
-                                {searchTerm ? `Không tìm thấy "${searchTerm}"` : "Không có thể loại nào khả dụng"}
-                            </div>
-                        )}
+                            )
+                        }
                     </div>
                 )}
             </div>
             {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
             {/* Selected Genres Tags */}
             <div className="flex flex-wrap gap-2 mt-3">
-                {selectedGenres.map((genre) => (
-                    <span
-                        key={genre}
-                        className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 transition-colors bg-blue-100 rounded-full hover:bg-blue-200"
-                    >
-                        <div className={`w-2 h-2 rounded-full mr-2 ${getGenreColor(genre)}`}></div>
-                        {GENRE_NAMES[genre]}
-                        <button
-                            type="button"
-                            className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-300 rounded-full p-0.5 transition-colors"
-                            onClick={() => removeGenre(genre)}
+                {
+                    selectedGenres.map((genre) => (
+                        <span
+                            key={genre}
+                            className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-800 transition-colors bg-blue-100 rounded-full hover:bg-blue-200"
                         >
-                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                    </span>
-                ))}
+                            <div className={
+                                `w-2 h-2 rounded-full mr-2 
+                                ${getGenreColor(genre)}
+                                `
+                            }></div>
+                            {GENRE_NAMES[genre]}
+                            <button
+                                type="button"
+                                className="ml-2 text-blue-600 hover:text-blue-800 hover:bg-blue-300 rounded-full p-0.5 transition-colors"
+                                onClick={() => removeGenre(genre)}
+                            >
+                                <svg className="w-3 h-3"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path fillRule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        </span>
+                    ))
+                }
             </div>
         </div>
     );

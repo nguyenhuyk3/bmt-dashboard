@@ -3,6 +3,7 @@ import { SIZE_OF_PAGINATION } from "../../utils/constants";
 
 const initialState = {
     films: [],
+    filmDetails: null,
     totalFilms: 0,
     totalPages: 0,
     currentPage: 0,
@@ -39,8 +40,6 @@ const filmSlice = createSlice({
 
             const { payload } = action;
 
-            console.log(action);
-
             state.films = payload.content;
             // Số lượng phim có trong db
             state.totalFilms = payload.totalElements;
@@ -50,6 +49,30 @@ const filmSlice = createSlice({
             state.currentPage = payload.number;
             state.isFirst = payload.first;
             state.isLast = payload.last;
+        },
+        getFilmByIdRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getFilmByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.filmDetails = action.payload;
+        },
+        updateFilmByIdRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        updateFilmByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.error = null;
+
+            const updatedFilm = action.payload;
+
+            if (state.filmDetails?.id === updatedFilm.id) {
+                state.filmDetails = updatedFilm;
+            }
+
         },
         performRequestFailure: (state, action) => {
             state.loading = false;
@@ -64,7 +87,13 @@ const filmSlice = createSlice({
 export const {
     addFilmRequest, addFilmSuccess,
     getAllFilmsRequest, getAllFilmsSuccess,
+    getFilmByIdRequest, getFilmByIdSuccess,
+    updateFilmByIdRequest, updateFilmByIdSuccess,
     performRequestFailure,
-    setCurrentPage } = filmSlice.actions;
+    setCurrentPage }
+    = filmSlice.actions;
+
+export const selectFilmById = (state, filmId) =>
+    state.film.films.find(f => f.id === filmId);
 
 export default filmSlice.reducer;

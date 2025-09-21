@@ -10,7 +10,7 @@ export default function InputField({ label, id, ...props }) {
                 id={id}
                 className={`
                         w-full px-3 py-2 border-2 rounded-md shadow-sm focus:outline-none
-                        ${props.type === "text" ? "" : "hover:cursor-pointer"}
+                        ${props.type === "text" || props.type === "email" ? "" : "hover:cursor-pointer"}
                         ${props.error
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                         : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"}

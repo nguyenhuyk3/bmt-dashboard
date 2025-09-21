@@ -217,18 +217,20 @@ export default function AddFilmForm() {
                 onChange={handlePosterChange}
                 error={errors.poster}
             >
-                {posterPreview ? (
-                    <div className="flex flex-col items-center space-y-2">
-                        <img
-                            src={posterPreview}
-                            alt="Poster preview"
-                            className="object-cover rounded-lg shadow-md max-w-32 max-h-48"
-                        />
-                        <p className="text-sm text-gray-600">Nhấp để thay đổi ảnh poster</p>
-                    </div>
-                ) : (
-                    <p className="text-sm text-gray-600">Nhấp để chọn ảnh poster</p>
-                )}
+                {
+                    posterPreview ? (
+                        <div className="flex flex-col items-center space-y-2">
+                            <img
+                                src={posterPreview}
+                                alt="Poster preview"
+                                className="object-cover max-w-full max-h-full rounded-lg shadow-md"
+                            />
+                            <p className="text-sm text-gray-600">Nhấp để thay đổi ảnh poster</p>
+                        </div>
+                    ) : (
+                        <p className="text-sm text-gray-600">Nhấp để chọn ảnh poster</p>
+                    )
+                }
             </FileUpload>
             <FileUpload
                 id="trailer"
@@ -237,19 +239,21 @@ export default function AddFilmForm() {
                 onChange={handleTrailerChange}
                 error={errors.trailer}
             >
-                {trailerPreview ? (
-                    <div className="flex flex-col items-center space-y-2">
-                        <video
-                            src={trailerPreview}
-                            className="rounded-lg shadow-md max-w-64 max-h-36"
-                            controls
-                            preload="metadata"
-                        />
-                        <p className="text-sm text-gray-600">Nhấp để thay đổi video trailer</p>
-                    </div>
-                ) : (
-                    <p className="text-sm text-gray-600">Nhấp để chọn video trailer</p>
-                )}
+                {
+                    trailerPreview ? (
+                        <div className="flex flex-col items-center space-y-2">
+                            <video
+                                src={trailerPreview}
+                                className="max-w-full max-h-full rounded-lg shadow-md"
+                                controls
+                                preload="metadata"
+                            />
+                            <p className="text-sm text-gray-600">Nhấp để thay đổi video trailer</p>
+                        </div>
+                    ) : (
+                        <p className="text-sm text-gray-600">Nhấp để chọn video trailer</p>
+                    )
+                }
             </FileUpload>
             <div className="flex pt-6 space-x-4">
                 <SubmitButton loading={loading} />

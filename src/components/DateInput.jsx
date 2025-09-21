@@ -24,7 +24,6 @@ export default function DateInput({ id, label, onChange, error, value = "" }) {
 
         return new Date(year, month, 0).getDate();
     };
-
     const handleChange = (y, m, d) => {
         if (y && m && d) {
             onChange && onChange(`${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`);
@@ -35,6 +34,7 @@ export default function DateInput({ id, label, onChange, error, value = "" }) {
 
     useEffect(() => {
         handleChange(year, month, day);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [year, month, day]);
 
     const currentYear = new Date().getFullYear();
@@ -53,24 +53,32 @@ export default function DateInput({ id, label, onChange, error, value = "" }) {
                 <select
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className={`px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer 
-                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
-                        }`}
+                    className={
+                        `px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer ho
+                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}
+                        `
+                    }
                 >
-                    <option value="">Năm</option>
-                    {years.map((y) => (
-                        <option key={y} value={y}>
-                            {y}
-                        </option>
-                    ))}
+                    <option
+                        value="">Năm</option>
+                    {
+                        years.map((y) => (
+                            <option
+                                key={y} value={y}>
+                                {y}
+                            </option>
+                        ))
+                    }
                 </select>
                 {/* Month */}
                 <select
                     value={month}
                     onChange={(e) => setMonth(e.target.value)}
-                    className={`px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer 
-                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
-                        }`}
+                    className={
+                        `px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer 
+                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}
+                        `
+                    }
                 >
                     <option value="">Tháng</option>
                     {months.map((m) => (
@@ -83,16 +91,20 @@ export default function DateInput({ id, label, onChange, error, value = "" }) {
                 <select
                     value={day}
                     onChange={(e) => setDay(e.target.value)}
-                    className={`px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer 
-                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
-                        }`}
+                    className={
+                        `px-3 py-2 border rounded-md focus:outline-none hover:cursor-pointer 
+                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}
+                        `
+                    }
                 >
                     <option value="">Ngày</option>
-                    {days.map((d) => (
-                        <option key={d} value={d}>
-                            {d.toString().padStart(2, "0")}
-                        </option>
-                    ))}
+                    {
+                        days.map((d) => (
+                            <option key={d} value={d}>
+                                {d.toString().padStart(2, "0")}
+                            </option>
+                        ))
+                    }
                 </select>
             </div>
             {error && <p className="mt-2 text-sm text-red-500">{error}</p>}

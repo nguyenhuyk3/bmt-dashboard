@@ -11,6 +11,7 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
             setMinute("");
         } else if (value) {
             const [h, m] = value.split(":");
+
             setHour(h);
             setMinute(m);
         }
@@ -27,7 +28,6 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
 
     const handleHourChange = (e) => {
         let val = e.target.value;
-
         // Cho phép rỗng hoặc số
         if (val === "") {
             setHour("");
@@ -35,10 +35,8 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
 
             return;
         }
-
         // Chỉ cho số
         if (!/^\d+$/.test(val)) return;
-
         // Convert sang số
         let num = parseInt(val, 10);
 
@@ -87,8 +85,11 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
                     max="23"
                     value={hour}
                     onChange={handleHourChange}
-                    className={`w-20 px-3 py-2 border rounded-md text-center focus:outline-none
-            ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
+                    className={
+                        `w-20 px-3 py-2 border rounded-md text-center focus:outline-none
+                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}
+                        `
+                    }
                 />
                 <span className="text-lg">:</span>
                 {/* Minute input */}
@@ -100,8 +101,11 @@ export default function TimeInput({ id, label, onChange, error, value = "" }) {
                     max="59"
                     value={minute}
                     onChange={handleMinuteChange}
-                    className={`w-20 px-3 py-2 border rounded-md text-center focus:outline-none
-            ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}`}
+                    className={
+                        `w-20 px-3 py-2 border rounded-md text-center focus:outline-none
+                        ${error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"}
+                        `
+                    }
                 />
             </div>
             {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
