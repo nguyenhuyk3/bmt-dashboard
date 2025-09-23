@@ -11,7 +11,7 @@ const filmApi = {
 
         return response.data.result;
     },
-    getAllFilms: async (request, accessToken) => {
+    getFilms: async (request, accessToken) => {
         const response = await axiosClient.get("/film", {
             params: {
                 page: request.page,
@@ -22,6 +22,14 @@ const filmApi = {
             }
         });
 
+        return response.data.result;
+    },
+    getAllFilms: async (accessToken) => {
+        const response = await axiosClient.get("/film/get-all", {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });        
         return response.data.result;
     },
     getFilmById: async (request, accessToken) => {

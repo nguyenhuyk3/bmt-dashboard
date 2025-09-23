@@ -53,7 +53,8 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                         ${error
                             ? "border-red-500 focus-within:ring-red-500 focus-within:border-red-500"
                             : "border-gray-300 focus-within:ring-blue-500 focus-within:border-blue-500 hover:border-gray-400"}
-                    `}
+                    `
+                    }
                 >
                     <input
                         id="genreSelector"
@@ -64,12 +65,14 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                             setSearchTerm(e.target.value);
 
                             if (!isOpen) setIsOpen(true);
-                        }}
+                        }
+                        }
                         onFocus={() => setIsOpen(true)}
                         onClick={(e) => {
                             e.stopPropagation();
                             setIsOpen(true);
-                        }}
+                        }
+                        }
                         className="flex-1 bg-transparent outline-none cursor-text"
                     />
                     <svg
@@ -84,40 +87,43 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                         onClick={(e) => {
                             e.stopPropagation();
                             setIsOpen(!isOpen);
-                        }}
+                        }
+                        }
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
                 {/* Dropdown Options */}
-                {isOpen && (
-                    <div className={
-                        `absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg 
+                {
+                    isOpen && (
+                        <div className={
+                            `absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg 
                         ${availableGenres.length > 6 ? 'max-h-60 overflow-y-auto' : ''}
                         `
-                    }>
-                        {
-                            availableGenres.length > 0 ? (
-                                availableGenres.map(([key, name]) => (
-                                    <div
-                                        key={key}
-                                        className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
-                                        onClick={() => handleSelectGenre(key)}
-                                    >
-                                        <div className="flex items-center">
-                                            <div className={`w-3 h-3 rounded-full mr-3 ${getGenreColor(key)}`}></div>
-                                            <span className="text-sm text-gray-900">{name}</span>
+                        }>
+                            {
+                                availableGenres.length > 0 ? (
+                                    availableGenres.map(([key, name]) => (
+                                        <div
+                                            key={key}
+                                            className="flex items-center px-3 py-2 transition-colors cursor-pointer hover:bg-gray-50 first:rounded-t-md last:rounded-b-md"
+                                            onClick={() => handleSelectGenre(key)}
+                                        >
+                                            <div className="flex items-center">
+                                                <div className={`w-3 h-3 rounded-full mr-3 ${getGenreColor(key)}`}></div>
+                                                <span className="text-sm text-gray-900">{name}</span>
+                                            </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className="px-3 py-2 text-sm text-gray-500 rounded-md">
+                                        {searchTerm ? `Không tìm thấy "${searchTerm}"` : "Không có thể loại nào khả dụng"}
                                     </div>
-                                ))
-                            ) : (
-                                <div className="px-3 py-2 text-sm text-gray-500 rounded-md">
-                                    {searchTerm ? `Không tìm thấy "${searchTerm}"` : "Không có thể loại nào khả dụng"}
-                                </div>
-                            )
-                        }
-                    </div>
-                )}
+                                )
+                            }
+                        </div>
+                    )
+                }
             </div>
             {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
             {/* Selected Genres Tags */}
@@ -132,7 +138,8 @@ export default function GenreSelector({ selectedGenres, setSelectedGenres, error
                                 `w-2 h-2 rounded-full mr-2 
                                 ${getGenreColor(genre)}
                                 `
-                            }></div>
+                            }
+                            ></div>
                             {GENRE_NAMES[genre]}
                             <button
                                 type="button"

@@ -26,7 +26,7 @@ const filmSlice = createSlice({
         addFilmSuccess: (state) => {
             state.loading = false;
         },
-        getAllFilmsRequest: (state, action) => {
+        getFilmsRequest: (state, action) => {
             state.loading = true;
             state.error = null;
 
@@ -34,7 +34,7 @@ const filmSlice = createSlice({
                 state.currentPage = action.payload.page;
             }
         },
-        getAllFilmsSuccess: (state, action) => {
+        getFilmsSuccess: (state, action) => {
             state.loading = false;
             state.error = null;
 
@@ -49,6 +49,18 @@ const filmSlice = createSlice({
             state.currentPage = payload.number;
             state.isFirst = payload.first;
             state.isLast = payload.last;
+        },
+        getAllFilmsRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        getAllFilmsSuccess: (state, action) => {
+            state.loading = false;
+            state.error = null;
+
+            const { payload } = action;
+            
+            state.films = payload;
         },
         getFilmByIdRequest: (state) => {
             state.loading = true;
@@ -86,14 +98,12 @@ const filmSlice = createSlice({
 
 export const {
     addFilmRequest, addFilmSuccess,
+    getFilmsRequest, getFilmsSuccess,
     getAllFilmsRequest, getAllFilmsSuccess,
     getFilmByIdRequest, getFilmByIdSuccess,
     updateFilmByIdRequest, updateFilmByIdSuccess,
     performRequestFailure,
     setCurrentPage }
     = filmSlice.actions;
-
-export const selectFilmById = (state, filmId) =>
-    state.film.films.find(f => f.id === filmId);
 
 export default filmSlice.reducer;

@@ -4,11 +4,13 @@ import MainLayout from "../layouts/MainLayout";
 import AddFilmPage from "../pages/film/addFilmPage/page";
 import FilmDashboard from "../pages/film/filmDashboard/filmDashboard";
 import EditFilmPage from "../pages/film/editFilmpage/page";
+import MovieShowtimeForm from "../pages/showtime/addShowtimePage/form";
 
 export const LOGIN = "/login";
 export const DEFAULT = "/";
 export const FILM_ADD = "film/add";
 export const FILL_EDIT = "film/edit/:id";
+export const SHOWTIME_ADD = "showtime/add";
 
 const ROUTES = [
     {
@@ -34,6 +36,10 @@ const ROUTES = [
             {
                 path: FILL_EDIT,
                 element: <EditFilmPage />
+            },
+            {
+                path: SHOWTIME_ADD,
+                element: <MovieShowtimeForm />
             }
         ],
     },

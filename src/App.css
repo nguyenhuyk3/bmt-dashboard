@@ -15,6 +15,18 @@ input[type="password"]::-webkit-textfield-decoration-container {
   display: none !important;
 }
 
+.react-datepicker-popper {
+  margin-top: 0 !important; /* bỏ margin mặc định */
+}
+
+.react-datepicker-wrapper {
+  width: 100%; /* cho full width giống input */
+}
+
+.react-datepicker__input-container input {
+  @apply p-2 border rounded-lg outline-none hover:cursor-pointer focus:border-blue-500 focus:ring-1 focus:ring-blue-500;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

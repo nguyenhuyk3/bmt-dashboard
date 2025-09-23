@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAllFilmsRequest, setCurrentPage } from "../../../features/slices/index";
+import { getFilmsRequest, setCurrentPage } from "../../../features/slices/index";
 import { SIZE_OF_PAGINATION } from "../../../utils/constants";
 import { GENRE_NAMES, getGenreColor } from '../../../utils/mappers/genre';
 import { GenreDropdown, LoadingScreen, ErrorMessage } from "../../../components/index";
@@ -358,16 +358,15 @@ const FilmDashboard = () => {
         loading,
         error
     } = useSelector((state) => state.film);
-
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenre, setSelectedGenre] = useState('');
     // const [selectedStatus, setSelectedStatus] = useState('');
     const [sortBy, setSortBy] = useState('');
     // Fetch films khi component mount hoặc khi page thay đổi
     useEffect(() => {
-        dispatch(getAllFilmsRequest({
+        dispatch(getFilmsRequest({
             page: currentPage,
-            size: SIZE_OF_PAGINATION
+            size: SIZE_OF_PAGINATION,
         }));
     }, [dispatch, currentPage]);
     // Handle page change
@@ -385,9 +384,9 @@ const FilmDashboard = () => {
         onPageChange: handlePageChange
     };
     const handleRetry = () => {
-        dispatch(getAllFilmsRequest({
+        dispatch(getFilmsRequest({
             page: currentPage,
-            size: SIZE_OF_PAGINATION
+            size: SIZE_OF_PAGINATION,
         }));
     };
 

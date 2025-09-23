@@ -5,6 +5,7 @@ import {
     addFilmRequest, addFilmSuccess,
     getFilmByIdSuccess, getFilmByIdRequest,
     getAllFilmsRequest, getAllFilmsSuccess,
+    getFilmsRequest, getFilmsSuccess,
     performRequestFailure,
     updateFilmByIdSuccess,
     updateFilmByIdRequest,
@@ -26,10 +27,21 @@ function* handleAddFilm(action) {
     }
 }
 
-function* handleGetAllFilms(action) {
+function* handleGetFilms(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-        const response = yield call(filmApi.getAllFilms, action.payload, accessToken)
+        const response = yield call(filmApi.getFilms, action.payload, accessToken)
+
+        yield put(getFilmsSuccess(response));
+    } catch (e) {
+        yield put(performRequestFailure(e.message));
+    }
+}
+
+function* handleGetAllFilms() {
+    try {
+        const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
+        const response = yield call(filmApi.getAllFilms, accessToken)
 
         yield put(getAllFilmsSuccess(response));
     } catch (e) {
@@ -69,6 +81,10 @@ function* handleUpdateFilmById(action) {
 
 export function* watchAddFilm() {
     yield takeLatest(addFilmRequest.type, handleAddFilm);
+}
+
+export function* watchGetFilms() {
+    yield takeLatest(getFilmsRequest.type, handleGetFilms);
 }
 
 export function* watchGetAllFilms() {
