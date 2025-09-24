@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 import {
     getAllAuditoriumsByCinemaIdRequest,
     getAllAuditoriumsByCinemaIdSuccess,
@@ -7,7 +7,7 @@ import {
 import { auditoriumApi } from "../../api";
 
 function* handleGetAuditoriumsByCinemaId(action) {
-    try {        
+    try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
         const response = yield call(
             auditoriumApi.getAllAuditoriumsByCinemaId,
@@ -21,6 +21,11 @@ function* handleGetAuditoriumsByCinemaId(action) {
     }
 }
 
-export function* watchGetAuditoriumsByCinemaId() {
-    yield takeLatest(getAllAuditoriumsByCinemaIdRequest.type, handleGetAuditoriumsByCinemaId);
+export default function* auditoriumSaga() {
+    yield all([
+        takeLatest(
+            getAllAuditoriumsByCinemaIdRequest.type,
+            handleGetAuditoriumsByCinemaId
+        ),
+    ]);
 }

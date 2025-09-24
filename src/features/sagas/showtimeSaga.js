@@ -48,7 +48,7 @@ function* handleAddShowtime(action) {
     }
 }
 
-export default function* watchShowtime() {
+export default function* showtimeSaga() {
     yield takeLatest(
         getLatestShowtimeByAuditoriumIdAndByShowDateRequest.type,
         handleGetLastestShowtimeByAuditoriumIdAndByShowDate

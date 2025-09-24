@@ -1,6 +1,5 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 import { toast } from "react-toastify";
-import { Navigate } from "react-router-dom";
 
 import { loginRequest, loginSuccess, loginFailure } from "../slices/index";
 import { authenticationApi } from "../../api/index";
@@ -62,6 +61,9 @@ function* handleLogin(action) {
 }
 
 // Saga watcher
-export default function* watchLogin() {
-    yield takeLatest(loginRequest.type, handleLogin);
+export default function* authenticationSaga() {
+    yield all([
+        takeLatest(loginRequest.type, handleLogin),
+    ]);
+
 }

@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 
 import { filmProfessionalApi } from "../../api/index";
 import {
@@ -11,7 +11,7 @@ import {
 function* handleFetchFilmProfessionals() {
     try {
         const response = yield call(filmProfessionalApi.getAll);
-        
+
         yield put(fetchFilmProfessionalsSuccess(response));
     } catch (e) {
         yield put(fetchFilmProfessionalsFailure(e.message));
@@ -19,6 +19,8 @@ function* handleFetchFilmProfessionals() {
 }
 
 // Saga watcher
-export default function* watchFetchFilmProfessionals() {
-    yield takeLatest(fetchFilmProfessionals.type, handleFetchFilmProfessionals);
+export default function* filmProfessionalSaga() {
+    yield all([
+        takeLatest(fetchFilmProfessionals.type, handleFetchFilmProfessionals),
+    ]);
 }

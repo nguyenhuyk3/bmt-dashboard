@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 import { toast } from "react-toastify";
 
 import {
@@ -12,17 +12,17 @@ import {
 } from "../slices/index";
 import { filmApi } from "../../api/index";
 
+// =============== Handlers ===============
+
 function* handleAddFilm(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
         const response = yield call(filmApi.addFilm, action.payload, accessToken);
 
         yield put(addFilmSuccess(response));
-
         toast.success("Thêm phim thành công!!");
     } catch (e) {
         yield put(performRequestFailure(e.message));
-
         toast.error("Thêm phim thất bại!!");
     }
 }
@@ -30,7 +30,7 @@ function* handleAddFilm(action) {
 function* handleGetFilms(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-        const response = yield call(filmApi.getFilms, action.payload, accessToken)
+        const response = yield call(filmApi.getFilms, action.payload, accessToken);
 
         yield put(getFilmsSuccess(response));
     } catch (e) {
@@ -41,7 +41,7 @@ function* handleGetFilms(action) {
 function* handleGetAllFilms() {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-        const response = yield call(filmApi.getAllFilms, accessToken)
+        const response = yield call(filmApi.getAllFilms, accessToken);
 
         yield put(getAllFilmsSuccess(response));
     } catch (e) {
@@ -52,7 +52,7 @@ function* handleGetAllFilms() {
 function* handleGetFilmById(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-        const response = yield call(filmApi.getFilmById, action.payload, accessToken)
+        const response = yield call(filmApi.getFilmById, action.payload, accessToken);
 
         yield put(getFilmByIdSuccess(response));
     } catch (e) {
@@ -63,7 +63,7 @@ function* handleGetFilmById(action) {
 function* handleUpdateFilmById(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-        const response = yield call(filmApi.updateFilmlById, action.payload.formData, accessToken)
+        const response = yield call(filmApi.updateFilmlById, action.payload.formData, accessToken);
 
         yield put(updateFilmByIdSuccess(response));
 
@@ -74,29 +74,16 @@ function* handleUpdateFilmById(action) {
         toast.success("Cập nhập phim thành công!!");
     } catch (e) {
         yield put(performRequestFailure(e.message));
-
         toast.error("Cập nhật thất bại!!");
     }
 }
 
-export function* watchAddFilm() {
-    yield takeLatest(addFilmRequest.type, handleAddFilm);
+export default function* filmSaga() {
+    yield all([
+        takeLatest(addFilmRequest.type, handleAddFilm),
+        takeLatest(getFilmsRequest.type, handleGetFilms),
+        takeLatest(getAllFilmsRequest.type, handleGetAllFilms),
+        takeLatest(getFilmByIdRequest.type, handleGetFilmById),
+        takeLatest(updateFilmByIdRequest.type, handleUpdateFilmById),
+    ]);
 }
-
-export function* watchGetFilms() {
-    yield takeLatest(getFilmsRequest.type, handleGetFilms);
-}
-
-export function* watchGetAllFilms() {
-    yield takeLatest(getAllFilmsRequest.type, handleGetAllFilms);
-}
-
-export function* watchGetFilmById() {
-    yield takeLatest(getFilmByIdRequest.type, handleGetFilmById);
-}
-
-export function* watchUpdateFilmById() {
-    yield takeLatest(updateFilmByIdRequest.type, handleUpdateFilmById);
-}
-
-
