@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { GENRE_NAMES, getGenreColor } from "../utils/mappers/index";
+import { GENRE_NAMES, getGenreColor } from "../utils/mappers/genre";
 
 export default function GenreSelector({ selectedGenres, setSelectedGenres, error }) {
     const [isOpen, setIsOpen] = useState(false);

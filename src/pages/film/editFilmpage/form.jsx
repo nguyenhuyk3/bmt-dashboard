@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 import {
     InputField, TextareaField,
@@ -9,77 +11,10 @@ import {
     LoadingScreen
 } from "../../../components/index";
 import { fetchFilmProfessionals, getFilmByIdRequest, updateFilmByIdRequest } from "../../../features/slices/index";
-import { useParams } from "react-router-dom";
 import { DEFAULT } from "../../../utils/routes";
-import { toast } from "react-toastify";
-
-function SubmitButton({ loading }) {
-    return (
-        <button
-            type="submit"
-            disabled={loading}
-            className={`
-                flex-1 px-4 py-2 text-white rounded-md focus:ring-2 focus:ring-blue-500
-                ${loading
-                    ? "bg-blue-600 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
-                }
-            `}
-        >
-            {loading ? "Đang cập nhật..." : "Cập nhật phim"}
-        </button>
-    );
-}
-
-function CancelButton({ loading, onCancel }) {
-    return (
-        <button
-            type="button"
-            onClick={onCancel}
-            disabled={loading}
-            className={`
-                flex-1 px-4 py-2 rounded-md focus:ring-2 focus:ring-gray-500
-                ${loading
-                    ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-                    : "bg-gray-300 text-gray-700 hover:bg-gray-400"
-                }
-            `}
-        >
-            Hủy bỏ
-        </button>
-    );
-}
-
-function ConfirmModal({ open, onConfirm, onCancel }) {
-    if (!open) return null;
-
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center min-h-screen bg-black bg-opacity-40">
-            <div className="p-6 bg-white rounded-lg shadow-lg w-80">
-                <h2 className="mb-4 text-lg font-semibold text-gray-800">
-                    Xác nhận hủy bỏ
-                </h2>
-                <p className="mb-6 text-sm font-medium text-gray-600">
-                    Bạn có chắc chắn muốn hủy bỏ các thay đổi?
-                </p>
-                <div className="flex justify-end space-x-3">
-                    <button
-                        className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-                        onClick={onCancel}
-                    >
-                        Quay lại
-                    </button>
-                    <button
-                        className="px-4 py-2 text-white bg-red-600 rounded-md hover:bg-red-700"
-                        onClick={onConfirm}
-                    >
-                        Xác nhận
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-}
+import SubmitButton from "./sections/SubmitButton";
+import CancelButton from "./sections/CancelButton";
+import ConfirmModal from "./sections/ConfirmModal";
 
 export default function EditFilmForm() {
     const dispatch = useDispatch();
@@ -105,7 +40,6 @@ export default function EditFilmForm() {
     useEffect(() => {
         dispatch(fetchFilmProfessionals());
     }, [dispatch]);
-
     useEffect(() => {
         dispatch(getFilmByIdRequest({ id }))
     }, [dispatch, id]);

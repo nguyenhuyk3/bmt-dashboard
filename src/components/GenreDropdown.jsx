@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { GENRE_NAMES, getGenreColor } from "../utils/mappers/index";
+import { GENRE_NAMES, getGenreColor } from "../utils/mappers/genre";
 
 export default function GenreDropdown({ selectedGenre, setSelectedGenre }) {
     const [isOpen, setIsOpen] = useState(false);

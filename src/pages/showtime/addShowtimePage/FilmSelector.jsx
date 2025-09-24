@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Clock, Calendar, ChevronDown, Play } from "lucide-react";
 
 import { timeToMinutes } from "../../../utils/convertors/time";
-import { GENRE_NAMES, getGenreColor } from "../../../utils/mappers/index";
+import { GENRE_NAMES, getGenreColor } from "../../../utils/mappers/genre";
 
 const FilmSelector = ({ films, value, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
