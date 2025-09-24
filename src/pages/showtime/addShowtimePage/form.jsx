@@ -20,19 +20,16 @@ import {
 const AddShowtimeForm = () => {
     const dispatch = useDispatch();
     const [film, setFilm] = useState(null);
-
     const { films } = useSelector((state) => state.film);
     const { cinemas } = useSelector((state) => state.cinema);
     const { auditoriums, loading: auditoriumsLoading } = useSelector((state) => state.auditorium);
     const { lastestShowtime } = useSelector((state) => state.showtime);
-
     const [formData, setFormData] = useState({
         filmId: '',
         auditoriumId: '',
         showDate: '',
         coefficient: 1
     });
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // Effects
@@ -61,13 +58,16 @@ const AddShowtimeForm = () => {
     const handleFormDataChange = (newData) => {
         setFormData(prev => ({ ...prev, ...newData }));
     };
-
     const handleSubmit = async () => {
-        console.log('Submitting form data:', formData);
         setIsSubmitting(true);
 
         try {
-            await dispatch(addShowtimeRequest(formData));
+            await dispatch(addShowtimeRequest({
+                filmId: formData.filmId,
+                auditoriumId: formData.auditoriumId,
+                showDate: formData.showDate,
+                coefficient: formData.coefficient
+            }));
         } catch (error) {
             console.error('Error submitting form:', error);
         } finally {
@@ -94,6 +94,7 @@ const AddShowtimeForm = () => {
                         auditoriumsLoading={auditoriumsLoading}
                         formData={formData}
                         onFormDataChange={handleFormDataChange}
+                        isAuditoriumSelectorSmall={false}
                     />
                     <DateCoefficientSection
                         formData={formData}

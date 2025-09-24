@@ -3,7 +3,7 @@ import { ChevronDown, Star, Users, Loader2 } from 'lucide-react';
 
 import { getTagColor } from '../../../../utils/randomers/color';
 
-const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading }) => {
+const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading, isAuditoriumSelectorSmall }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const selectedAuditorium = auditoriums.find(auditorium => auditorium.id === value);
@@ -70,7 +70,7 @@ const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading })
     };
 
     return (
-        <div className="max-w-4xl mx-auto" ref={dropdownRef}>
+        <div className="w-full mx-auto" ref={dropdownRef} style={{ maxHeight: '60vh' }}>
             <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-2xl">
                 <h2 className="flex items-center mb-4 text-2xl font-semibold text-gray-800">
                     🎪 Chọn Phòng Chiếu
@@ -133,7 +133,9 @@ const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading })
                         )}
                     </button>
                     {isOpen && !disabled && !loading && auditoriums.length > 0 && (
-                        <div className="absolute left-0 right-0 z-50 mt-2 overflow-y-auto duration-300 bg-white border border-gray-200 shadow-xl top-full rounded-xl max-h-96 animate-in fade-in slide-in-from-top-2">
+                        <div className={`absolute left-0 right-0 z-50 mt-2 overflow-y-auto duration-300 bg-white border border-gray-200 shadow-xl top-full rounded-xl animate-in fade-in slide-in-from-top-2 
+                            ${isAuditoriumSelectorSmall ? 'max-h-72' : 'max-h-96'
+                            }`}>
                             <div className="p-2">
                                 {auditoriums.map((auditorium) => {
                                     const details = getAuditoriumDetails(auditorium);

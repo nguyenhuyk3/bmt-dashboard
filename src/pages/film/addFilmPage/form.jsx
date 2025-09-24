@@ -42,7 +42,6 @@ export default function AddFilmForm() {
             reader.onload = (e) => {
                 setPosterPreview(e.target.result);
             };
-
             reader.readAsDataURL(file);
         } else {
             setPosterPreview(null);
@@ -104,7 +103,6 @@ export default function AddFilmForm() {
         }
 
         dispatch(addFilmRequest(formData));
-
         setErrors({});
 
     };

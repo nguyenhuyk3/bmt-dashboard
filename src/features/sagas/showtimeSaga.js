@@ -4,8 +4,13 @@ import { toast } from "react-toastify";
 import {
     getLatestShowtimeByAuditoriumIdAndByShowDateRequest,
     getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
-    addShowtimeRequest, addShowtimeSuccess,
-    performShowtimeRequestFailure
+    addShowtimeRequest,
+    addShowtimeSuccess,
+    findShowtimesByAuditoriumIdAndShowDateRequest,
+    findShowtimesByAuditoriumIdAndShowDateSuccess,
+    performShowtimeRequestFailure,
+    releaseShowtimeSuccess,
+    releaseShowtimeRequest
 } from "../slices/showtimeSlice";
 import { showtimeApi } from "../../api/index";
 import { formatToHHmm } from "../../utils/convertors/time";
@@ -13,11 +18,11 @@ import { formatToHHmm } from "../../utils/convertors/time";
 function* handleGetLastestShowtimeByAuditoriumIdAndByShowDate(action) {
     try {
         const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
-
-        // action.payload = { auditoriumId, showDate }
-        const response = yield call(showtimeApi.getLastestShowtimeByAuditoriumIdAndByShowDate, action.payload, accessToken);
-
-        console.log(formatToHHmm(response));
+        const response = yield call(
+            showtimeApi.getLastestShowtimeByAuditoriumIdAndByShowDate,
+            action.payload,
+            accessToken
+        );
 
         yield put(getLatestShowtimeByAuditoriumIdAndByShowDateSuccess(formatToHHmm(response)));
     } catch (error) {
@@ -48,10 +53,50 @@ function* handleAddShowtime(action) {
     }
 }
 
+function* handleFindShowtimesByAuditoriumIdAndShowDate(action) {
+    try {
+        const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
+        const { auditoriumId, showDate } = action.payload;
+
+        const response = yield call(
+            showtimeApi.findShowtimesByAuditoriumIdAndShowDate,
+            auditoriumId,
+            showDate,
+            accessToken
+        );
+
+        yield put(findShowtimesByAuditoriumIdAndShowDateSuccess(response));
+    } catch (error) {
+        yield put(performShowtimeRequestFailure(error.message));
+    }
+}
+
+function* handleReleaseShowtime(action) {
+    try {
+        const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
+        const response = yield call(
+            showtimeApi.releaseShowtime,
+            action.payload,
+            accessToken
+        );
+
+        toast.success("Công bố suất chiếu thành công!!");
+
+        yield put(releaseShowtimeSuccess(response));
+    } catch (error) {
+        yield put(performShowtimeRequestFailure(error.message));
+    }
+}
+
 export default function* showtimeSaga() {
     yield takeLatest(
         getLatestShowtimeByAuditoriumIdAndByShowDateRequest.type,
         handleGetLastestShowtimeByAuditoriumIdAndByShowDate
     );
     yield takeLatest(addShowtimeRequest.type, handleAddShowtime);
+    yield takeLatest(
+        findShowtimesByAuditoriumIdAndShowDateRequest.type,
+        handleFindShowtimesByAuditoriumIdAndShowDate
+    );
+    yield takeLatest(releaseShowtimeRequest.type, handleReleaseShowtime)
 }

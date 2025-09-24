@@ -4,7 +4,11 @@ import { getAllAuditoriumsByCinemaIdRequest } from '../../../../features/slices/
 import AuditoriumSelector from './AuditoriumSelector';
 import CinemaSelector from './CinemaSelector';
 
-const CinemaAndAuditoriumSelector = ({ cinemas, auditoriums, auditoriumsLoading, formData, onFormDataChange }) => {
+const CinemaAndAuditoriumSelector = ({
+    cinemas,
+    auditoriums, auditoriumsLoading,
+    formData, onFormDataChange,
+    isAuditoriumSelectorSmall }) => {
     const dispatch = useDispatch();
     // Xử lý khi chọn cinema
     const handleCinemaChange = (cinemaId) => {
@@ -38,6 +42,7 @@ const CinemaAndAuditoriumSelector = ({ cinemas, auditoriums, auditoriumsLoading,
                         auditoriums={auditoriums || []}
                         disabled={!formData.cinemaId}
                         loading={auditoriumsLoading}
+                        isAuditoriumSelectorSmall={isAuditoriumSelectorSmall}
                     />
                 </div>
             </div>

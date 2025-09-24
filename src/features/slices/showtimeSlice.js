@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    showtimes: [],
     lastestShowtime: "9:00",
     loading: false,
     error: null,
@@ -27,6 +28,22 @@ const showtimeSlice = createSlice({
             state.loading = false;
             state.createdShowtime = action.payload;
         },
+        findShowtimesByAuditoriumIdAndShowDateRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+            state.showtimes = [];
+        },
+        findShowtimesByAuditoriumIdAndShowDateSuccess: (state, action) => {
+            state.loading = false;
+            state.showtimes = action.payload;
+        },
+        releaseShowtimeRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        releaseShowtimeSuccess: (state) => {
+            state.loading = false;
+        },
         performShowtimeRequestFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
@@ -37,8 +54,13 @@ const showtimeSlice = createSlice({
 export const {
     getLatestShowtimeByAuditoriumIdAndByShowDateRequest,
     getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
-    addShowtimeRequest, addShowtimeSuccess,
-    performShowtimeRequestFailure,
+    addShowtimeRequest,
+    addShowtimeSuccess,
+    findShowtimesByAuditoriumIdAndShowDateRequest,
+    findShowtimesByAuditoriumIdAndShowDateSuccess,
+    releaseShowtimeRequest,
+    releaseShowtimeSuccess,
+    performShowtimeRequestFailure
 } = showtimeSlice.actions;
 
 export default showtimeSlice.reducer;

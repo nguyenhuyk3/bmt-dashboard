@@ -50,3 +50,11 @@ export const addMinutesToTime = (timeString, minutesToAdd) => {
         .toString()
         .padStart(2, "0")}`;
 };
+
+export const formatTime = (timeString) => {
+    const date = new Date(timeString);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+
+    return `${hours}:${minutes.toString().padStart(2, '0')}`;
+};

@@ -26,6 +26,35 @@ const showtimeApi = {
         );
 
         return response.data.result;
+    },
+    findShowtimesByAuditoriumIdAndShowDate: async (auditoriumId, showDate, accessToken) => {
+        const response = await axiosClient.get(
+            `/showtime/find-by-auditorium-id-and-by-showdate`,
+            {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                },
+                params: {
+                    auditoriumId,
+                    showDate,
+                },
+            }
+        );
+
+        return response.data.result;
+    },
+    releaseShowtime: async (request, accessToken) => {
+        const response = await axiosClient.post(
+            "/showtime/release",
+            request,
+            {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        return response.data.result;
     }
 };
 

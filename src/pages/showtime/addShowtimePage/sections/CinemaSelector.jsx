@@ -34,7 +34,7 @@ const CinemaSelector = ({ value, onChange, cinemas }) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto" ref={dropdownRef}>
+        <div className="w-full mx-auto" ref={dropdownRef}>
             <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-2xl">
                 <h2 className="flex items-center mb-4 text-2xl font-semibold text-gray-800">
                     🏢 Chọn Rạp Chiếu
