@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Users } from 'lucide-react';
 
-import { getRandomBgColor, getTagColor } from '../../../utils/randomers/color';
+import { getRandomBgColor, getTagColor } from '../../../../utils/randomers/color';
 
 const CinemaSelector = ({ value, onChange, cinemas }) => {
     const [isOpen, setIsOpen] = useState(false);

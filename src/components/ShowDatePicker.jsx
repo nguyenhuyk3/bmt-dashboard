@@ -142,14 +142,14 @@ const ShowDatePicker = ({ label, onChange }) => {
 
     return (
         <div className="flex flex-col gap-2" ref={datePickerRef}>
-            <label htmlFor="customDatePicker" className="font-semibold text-gray-950">
+            <label htmlFor="customDatePicker" className="text-sm font-medium text-gray-950">
                 {label}
             </label>
             <div className="relative">
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="w-full px-4 py-3 text-left transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400"
+                    className="w-full px-4 py-3 text-left transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm hover:border-blue-500 hover:ring-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
                 >
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">

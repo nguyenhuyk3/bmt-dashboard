@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Star, Users, Loader2 } from 'lucide-react';
 
-import { getTagColor } from '../../../utils/randomers/color';
+import { getTagColor } from '../../../../utils/randomers/color';
 
 const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading }) => {
     const [isOpen, setIsOpen] = useState(false);

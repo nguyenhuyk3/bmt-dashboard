@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 
-import { getAllAuditoriumsByCinemaIdRequest } from '../../../features/slices/auditoriumSlice';
+import { getAllAuditoriumsByCinemaIdRequest } from '../../../../features/slices/auditoriumSlice';
 import AuditoriumSelector from './AuditoriumSelector';
 import CinemaSelector from './CinemaSelector';
 

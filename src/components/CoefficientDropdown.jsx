@@ -70,7 +70,7 @@ const CoefficientDropdown = ({ value, onChange }) => {
 
     return (
         <div className="flex flex-col gap-2" ref={dropdownRef}>
-            <label className="block font-semibold text-gray-950">
+            <label className="block text-sm font-medium text-gray-950">
                 Hệ số giá (Coefficient)
             </label>
             {/* Custom Dropdown */}
@@ -78,7 +78,7 @@ const CoefficientDropdown = ({ value, onChange }) => {
                 <button
                     type="button"
                     onClick={() => setIsOpen(!isOpen)}
-                    className="w-full px-4 py-3 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-gray-400"
+                    className="w-full px-4 py-3 transition-all duration-200 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none hover:border-blue-500"
                 >
                     <div className="flex items-center justify-between">
                         {selectedOption && (
@@ -101,7 +101,6 @@ const CoefficientDropdown = ({ value, onChange }) => {
                         />
                     </div>
                 </button>
-
                 {/* Dropdown Menu */}
                 {isOpen && (
                     <div className="absolute left-0 right-0 z-10 mt-2 overflow-hidden duration-200 bg-white border border-gray-200 rounded-lg shadow-lg top-full animate-in fade-in slide-in-from-top-2">
@@ -110,9 +109,8 @@ const CoefficientDropdown = ({ value, onChange }) => {
                                 key={option.value}
                                 type="button"
                                 onClick={() => handleSelect(option.value)}
-                                className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 focus:outline-none focus:bg-gray-50 ${
-                                    option.value === value ? 'bg-blue-50 border-r-2 border-blue-500' : ''
-                                }`}
+                                className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 focus:outline-none focus:bg-gray-50 ${option.value === value ? 'bg-blue-50 border-r-2 border-blue-500' : ''
+                                    }`}
                             >
                                 <div className="flex items-center space-x-3">
                                     <div className={`p-2 rounded-lg ${option.bgColor} transition-all duration-150`}>

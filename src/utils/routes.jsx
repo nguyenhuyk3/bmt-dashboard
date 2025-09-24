@@ -4,7 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import AddFilmPage from "../pages/film/addFilmPage/page";
 import FilmDashboard from "../pages/film/filmDashboard/filmDashboard";
 import EditFilmPage from "../pages/film/editFilmpage/page";
-import AddShowtimeForm from "../pages/showtime/addShowtimePage/form";
+import AddShowtimePage from "../pages/showtime/addShowtimePage/page";
 
 export const LOGIN = "/login";
 export const DEFAULT = "/";
@@ -39,7 +39,7 @@ const ROUTES = [
             },
             {
                 path: SHOWTIME_ADD,
-                element: <AddShowtimeForm />
+                element: <AddShowtimePage />
             }
         ],
     },
