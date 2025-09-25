@@ -17,6 +17,7 @@ const STATUS = {
     PROCESSING: 'processing',
     REMOVING: 'removing',
 };
+
 const TIMINGS = {
     PROCESS_DURATION: 1500,
     REMOVE_ANIMATION: 600,
@@ -36,6 +37,7 @@ const ReleaseShowtimeForm = () => {
 
     useEffect(() => {
         dispatch(getAllCinemasRequest());
+        
         return () => {
             Object.values(timersRef.current).forEach(clearTimeout);
         };
@@ -99,7 +101,7 @@ const ReleaseShowtimeForm = () => {
     const shouldShowNoResults = !showtimesLoading && hasSearched && localShowtimes.length === 0 && canSearch;
 
     return (
-        <div className="max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg">
+        <div className="max-w-4xl p-6 mx-auto rounded-lg shadow-lg bg-gradient-to-br from-blue-50 to-indigo-100">
             <CinemaAuditoriumSelectorSection
                 cinemas={cinemas}
                 auditoriums={auditoriums}
