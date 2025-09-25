@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+// ReleaseShowtimeForm.jsx
+
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -11,6 +13,15 @@ import ShowDatePickerSection from './sections/ShowDatePickerSection';
 import ShowtimesListSection from './sections/ShowtimesListSection';
 import NoResultsSection from './sections/NoResultsSection';
 
+const STATUS = {
+    PROCESSING: 'processing',
+    REMOVING: 'removing',
+};
+const TIMINGS = {
+    PROCESS_DURATION: 1500,
+    REMOVE_ANIMATION: 600,
+};
+
 const ReleaseShowtimeForm = () => {
     const dispatch = useDispatch();
     const { cinemas } = useSelector((state) => state.cinema);
@@ -19,59 +30,72 @@ const ReleaseShowtimeForm = () => {
 
     const [localShowtimes, setLocalShowtimes] = useState([]);
     const [requestParams, setRequestParams] = useState({ auditoriumId: '', showDate: '' });
-
-    // -- THAY ĐỔI 1: Hợp nhất state xử lý --
-    const [processingIds, setProcessingIds] = useState([]); // ID đang ở trạng thái "Đang xử lý"
-    const [removing, setRemoving] = useState([]); // ID đang trong animation xóa
-
     const [hasSearched, setHasSearched] = useState(false);
+    const [showtimeStatuses, setShowtimeStatuses] = useState({});
+    const timersRef = useRef({});
+
+    useEffect(() => {
+        dispatch(getAllCinemasRequest());
+        return () => {
+            Object.values(timersRef.current).forEach(clearTimeout);
+        };
+    }, [dispatch]);
+
+    // --- FIX: THAY ĐỔI LOGIC ĐỒNG BỘ STATE ---
+    // Effect này bây giờ CHỈ đồng bộ `showtimes` từ Redux vào `localShowtimes`
+    // khi dữ liệu gốc từ Redux thay đổi (ví dụ: sau một lần tìm kiếm mới).
+    // Quan trọng là nó sẽ KHÔNG chạy lại chỉ vì `showtimeStatuses` thay đổi.
+    useEffect(() => {
+        // Nếu có bất kỳ animation nào đang diễn ra, chúng ta KHÔNG đồng bộ.
+        // Điều này ngăn chặn việc Redux state (đã xóa 1 item) ghi đè lên
+        // local state và làm hỏng animation của các item khác.
+        if (Object.keys(showtimeStatuses).length > 0) {
+            return;
+        }
+
+        setLocalShowtimes(showtimes);
+
+        if (!showtimesLoading) {
+            setHasSearched(true);
+        }
+        // Bỏ `showtimeStatuses` ra khỏi dependency array là chìa khóa ở đây.
+    }, [showtimes, showtimesLoading]);
+
+
+    useEffect(() => {
+        if (requestParams.auditoriumId && requestParams.showDate) {
+            setHasSearched(false);
+            dispatch(findShowtimesByAuditoriumIdAndShowDateRequest(requestParams));
+        }
+    }, [dispatch, requestParams]);
 
     const handleFormDataChange = (newData) => {
         setRequestParams(prev => ({ ...prev, ...newData }));
         setHasSearched(false);
     };
 
-    useEffect(() => {
-        dispatch(getAllCinemasRequest());
-    }, [dispatch]);
-
-    useEffect(() => {
-        setLocalShowtimes(showtimes);
-        // Đặt hasSearched = true chỉ khi quá trình tìm kiếm đã kết thúc
-        if (!showtimesLoading) {
-            setHasSearched(true);
-        }
-    }, [showtimes, showtimesLoading]);
-
-    useEffect(() => {
-        if (requestParams.auditoriumId && requestParams.showDate) {
-            // Khi bắt đầu tìm kiếm, reset lại trạng thái
-            setHasSearched(false);
-            dispatch(findShowtimesByAuditoriumIdAndShowDateRequest(requestParams));
-        }
-    }, [dispatch, requestParams]);
-
     const handleReleaseShowtime = (showtimeId) => {
-        // Bước 1: Đánh dấu là "Đang xử lý..." ngay lập tức
-        setProcessingIds(prev => [...prev, showtimeId]);
         dispatch(releaseShowtimeRequest({ id: showtimeId }));
+        setShowtimeStatuses(prev => ({ ...prev, [showtimeId]: STATUS.PROCESSING }));
 
-        // Bước 2: Sau 1.5 giây, chuyển sang trạng thái "removing" để bắt đầu animation
-        setTimeout(() => {
-            setProcessingIds(prev => prev.filter(id => id !== showtimeId)); // Xóa khỏi danh sách xử lý
-            setRemoving(prev => [...prev, showtimeId]);
+        timersRef.current[showtimeId + '_process'] = setTimeout(() => {
+            setShowtimeStatuses(prev => ({ ...prev, [showtimeId]: STATUS.REMOVING }));
 
-            // Bước 3: Sau khi animation hoàn thành (600ms), xóa hẳn khỏi danh sách local
-            setTimeout(() => {
+            timersRef.current[showtimeId + '_remove'] = setTimeout(() => {
+                // Chỉ cập nhật local state, không cần đọc lại từ Redux
                 setLocalShowtimes(prev => prev.filter(s => s.showtimeId !== showtimeId));
-                setRemoving(prev => prev.filter(id => id !== showtimeId));
-            }, 600);
-        }, 1500);
+
+                setShowtimeStatuses(prev => {
+                    const newStatuses = { ...prev };
+                    delete newStatuses[showtimeId];
+                    return newStatuses;
+                });
+            }, TIMINGS.REMOVE_ANIMATION);
+
+        }, TIMINGS.PROCESS_DURATION);
     };
 
     const canSearch = requestParams.auditoriumId && requestParams.showDate;
-    // -- THAY ĐỔI 2: Logic hiển thị NoResultsSection không cần thay đổi, nhưng giờ nó sẽ hoạt động đúng
-    // vì localShowtimes được cập nhật chính xác.
     const shouldShowNoResults = !showtimesLoading && hasSearched && localShowtimes.length === 0 && canSearch;
 
     return (
@@ -90,8 +114,7 @@ const ReleaseShowtimeForm = () => {
                 showtimes={localShowtimes}
                 loading={showtimesLoading}
                 onRelease={handleReleaseShowtime}
-                processingIds={processingIds} // Truyền state mới xuống
-                removingIds={removing}       // Đổi tên cho rõ ràng
+                statuses={showtimeStatuses}
             />
             {shouldShowNoResults && <NoResultsSection />}
         </div>

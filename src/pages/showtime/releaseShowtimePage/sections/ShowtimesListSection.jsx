@@ -1,10 +1,10 @@
 import ShowtimeCard from './ShowtimeCard';
 import LoadingSection from './LoadingSection';
 
-const ShowtimesListSection = ({ showtimes, loading, onRelease, processingIds, removingIds }) => {
+// --- SỬA LỖI: Thay đổi props nhận vào ---
+// Thay vì nhận processingIds và removingIds, giờ chúng ta nhận một object `statuses` duy nhất.
+const ShowtimesListSection = ({ showtimes, loading, onRelease, statuses }) => {
     if (loading) return <LoadingSection />;
-    // -- THAY ĐỔI 3: Điều kiện này quan trọng, nó sẽ ẩn section này đi khi không còn suất chiếu
-    // để component NoResultsSection ở cha có thể hiện ra.
     if (!loading && showtimes.length === 0) return null;
 
     return (
@@ -16,8 +16,10 @@ const ShowtimesListSection = ({ showtimes, loading, onRelease, processingIds, re
                         key={showtime.showtimeId}
                         showtime={showtime}
                         onRelease={onRelease}
-                        isProcessing={processingIds.includes(showtime.showtimeId)}
-                        isRemoving={removingIds.includes(showtime.showtimeId)}
+                        // --- SỬA LỖI: Cập nhật logic để đọc từ object `statuses` ---
+                        // Kiểm tra trạng thái của showtime hiện tại trong object statuses.
+                        isProcessing={statuses[showtime.showtimeId] === 'processing'}
+                        isRemoving={statuses[showtime.showtimeId] === 'removing'}
                     />
                 ))}
             </div>

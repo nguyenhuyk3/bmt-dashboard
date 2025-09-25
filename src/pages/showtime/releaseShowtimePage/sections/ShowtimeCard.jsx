@@ -20,15 +20,15 @@ const ShowtimeCard = ({ showtime, onRelease, isProcessing, isRemoving }) => {
     const getButtonText = () => {
         if (isRemoving) return 'Hoàn thành!';
         if (isProcessing) return 'Đang xử lý...';
-      
+
         return 'Công Bố Suất Chiếu';
     };
 
     return (
         <div
             className={`overflow-hidden transition-all duration-500 ease-in-out ${isRemoving
-                    ? 'max-h-0 opacity-0 transform scale-y-0 mb-0'
-                    : 'max-h-96 opacity-100 transform scale-y-100 mb-4'
+                ? 'max-h-0 opacity-0 transform scale-y-0 mb-0'
+                : 'max-h-96 opacity-100 transform scale-y-100 mb-4'
                 }`}
         >
             <div
@@ -81,8 +81,8 @@ const ShowtimeCard = ({ showtime, onRelease, isProcessing, isRemoving }) => {
                             onClick={handleRelease}
                             disabled={isDisabled}
                             className={`px-4 py-2 text-white transition-all duration-200 rounded-md whitespace-nowrap ${isDisabled
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-green-500 hover:bg-green-600'
+                                ? 'bg-gray-400 cursor-not-allowed'
+                                : 'bg-green-500 hover:bg-green-600'
                                 }`}
                         >
                             {getButtonText()}
