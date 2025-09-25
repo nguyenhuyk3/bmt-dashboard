@@ -24,7 +24,7 @@ function* handleGetLastestShowtimeByAuditoriumIdAndByShowDate(action) {
             accessToken
         );
 
-        yield put(getLatestShowtimeByAuditoriumIdAndByShowDateSuccess(formatToHHmm(response)));
+        yield put(getLatestShowtimeByAuditoriumIdAndByShowDateSuccess(response ? formatToHHmm(response) : "9:00"));
     } catch (error) {
         yield put(performShowtimeRequestFailure(error.message));
     }

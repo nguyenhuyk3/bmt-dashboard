@@ -13,16 +13,14 @@ const formatDuration = (durationString) => {
 };
 
 const ShowtimeCard = ({ showtime, onRelease, isProcessing, isRemoving }) => {
-
     const handleRelease = () => {
-
         onRelease(showtime.showtimeId);
     };
-
     const isDisabled = isProcessing || isRemoving;
     const getButtonText = () => {
         if (isRemoving) return 'Hoàn thành!';
         if (isProcessing) return 'Đang xử lý...';
+      
         return 'Công Bố Suất Chiếu';
     };
 

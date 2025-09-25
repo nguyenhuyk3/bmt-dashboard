@@ -32,7 +32,6 @@ const AddShowtimeForm = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Effects
     useEffect(() => {
         dispatch(getAllFilmsRequest());
     }, [dispatch]);
@@ -54,28 +53,31 @@ const AddShowtimeForm = () => {
         setFilm(films.find(f => f.id === formData.filmId));
     }, [formData.filmId, films]);
 
-    // Handlers
     const handleFormDataChange = (newData) => {
         setFormData(prev => ({ ...prev, ...newData }));
     };
     const handleSubmit = async () => {
         setIsSubmitting(true);
 
-        try {
-            await dispatch(addShowtimeRequest({
-                filmId: formData.filmId,
-                auditoriumId: formData.auditoriumId,
-                showDate: formData.showDate,
-                coefficient: formData.coefficient
-            }));
-        } catch (error) {
-            console.error('Error submitting form:', error);
-        } finally {
-            setIsSubmitting(false);
+        dispatch(addShowtimeRequest({
+            filmId: formData.filmId,
+            auditoriumId: formData.auditoriumId,
+            showDate: formData.showDate,
+            coefficient: formData.coefficient
+        }));
+
+        if (formData.auditoriumId && formData.showDate) {
+            setTimeout(() => {
+                dispatch(getLatestShowtimeByAuditoriumIdAndByShowDateRequest({
+                    auditoriumId: formData.auditoriumId,
+                    showDate: formData.showDate
+                }));
+            }, 1000); // delay 1s
         }
+
+        setIsSubmitting(false);
     };
 
-    // Validation
     const isFormValid = formData.filmId && formData.auditoriumId && formData.showDate;
 
     return (
