@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Logo from "../assets/react.svg";
@@ -16,54 +16,81 @@ export default function Sidebar() {
             </div>
             {/* Menu */}
             <nav className="flex-1 p-4 space-y-2">
-                <Link to={DEFAULT} className="block p-2 rounded hover:bg-gray-700"> Quản lí phim </Link>
-                <>
-                    <button onClick={() => setOpenFilmoptions(!openFilmOptions)}
-                        className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-700" >
-                        <span className="font-semibold">
-                            Phim
-                        </span>
-                        {openFilmOptions ?
-                            (<ChevronDownIcon className="w-4 h-4" />) :
-                            (<ChevronRightIcon className="w-4 h-4" />)}
-                    </button>
-                    {/* Submenu */}
-                    {
-                        openFilmOptions && (
-                            <div className="mt-1 ml-4 space-y-1">
-                                <Link to={FILM_ADD}
-                                    className="block p-2 text-sm rounded hover:bg-gray-700" > Thêm phim </Link>
-                            </div>
-                        )
+                <NavLink
+                    to={DEFAULT}
+                    className={({ isActive }) =>
+                        `block p-2 rounded hover:bg-gray-700 
+                        ${isActive ? "bg-gray-700 font-bold" : ""}`
                     }
-                </>
-                <>
-                    <button onClick={() => setOpenShowtimeOptions(!openShowtimeOptions)}
-                        className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-700" >
-                        <span className="font-semibold">
-                            Suất chiếu
-                        </span>
-                        {openShowtimeOptions ?
-                            (<ChevronDownIcon className="w-4 h-4" />) :
-                            (<ChevronRightIcon className="w-4 h-4" />)}
-                    </button>
-                    {/* Submenu */}
-                    {
-                        openShowtimeOptions && (
-                            <div className="mt-1 ml-4 space-y-1">
-                                <Link to={SHOWTIME_ADD}
-                                    className="block p-2 text-sm rounded hover:bg-gray-700" >
-                                    Thêm suất chiếu
-                                </Link>
-                                <Link to={SHOWTIME_RELEASE}
-                                    className="block p-2 text-sm rounded hover:bg-gray-700" >
-                                    Thêm suất chiếu
-                                </Link>
-                            </div>
+                >
+                    Quản lí phim
+                </NavLink>
 
-                        )
-                    }
+                <>
+                    <button
+                        onClick={() => setOpenFilmoptions(!openFilmOptions)}
+                        className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-700"
+                    >
+                        <span className="font-semibold">Phim</span>
+                        {openFilmOptions ? (
+                            <ChevronDownIcon className="w-4 h-4" />
+                        ) : (
+                            <ChevronRightIcon className="w-4 h-4" />
+                        )}
+                    </button>
+                    {/* Submenu */}
+                    {openFilmOptions && (
+                        <div className="mt-1 ml-4 space-y-1">
+                            <NavLink
+                                to={FILM_ADD}
+                                className={({ isActive }) =>
+                                    `block p-2 text-sm rounded hover:bg-gray-700 
+                                    ${isActive ? "bg-gray-700 font-bold" : ""}`
+                                }
+                            >
+                                Thêm phim
+                            </NavLink>
+                        </div>
+                    )}
+                </>
+
+                <>
+                    <button
+                        onClick={() => setOpenShowtimeOptions(!openShowtimeOptions)}
+                        className="flex items-center justify-between w-full p-2 rounded hover:bg-gray-700"
+                    >
+                        <span className="font-semibold">Suất chiếu</span>
+                        {openShowtimeOptions ? (
+                            <ChevronDownIcon className="w-4 h-4" />
+                        ) : (
+                            <ChevronRightIcon className="w-4 h-4" />
+                        )}
+                    </button>
+                    {/* Submenu */}
+                    {openShowtimeOptions && (
+                        <div className="mt-1 ml-4 space-y-1">
+                            <NavLink
+                                to={SHOWTIME_ADD}
+                                className={({ isActive }) =>
+                                    `block p-2 text-sm rounded hover:bg-gray-700 
+                                    ${isActive ? "bg-gray-700 font-bold" : ""}`
+                                }
+                            >
+                                Thêm suất chiếu
+                            </NavLink>
+                            <NavLink
+                                to={SHOWTIME_RELEASE}
+                                className={({ isActive }) =>
+                                    `block p-2 text-sm rounded hover:bg-gray-700 
+                                    ${isActive ? "bg-gray-700 font-bold" : ""}`
+                                }
+                            >
+                                Công bố suất chiếu
+                            </NavLink>
+                        </div>
+                    )}
                 </>
             </nav>
-        </div>);
+        </div>
+    );
 }

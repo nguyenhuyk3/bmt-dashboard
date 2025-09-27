@@ -73,7 +73,7 @@ const AuditoriumSelector = ({ value, onChange, auditoriums, disabled, loading, i
         <div className="w-full mx-auto" ref={dropdownRef} style={{ maxHeight: '60vh' }}>
             <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-2xl">
                 <h2 className="flex items-center mb-4 text-2xl font-semibold text-gray-800">
-                    🎪 Chọn Phòng Chiếu
+                    Chọn Phòng Chiếu
                 </h2>
                 <div className="relative">
                     <label htmlFor="auditorium" className="block mb-3 text-sm font-medium text-gray-700 hover:cursor-pointer">

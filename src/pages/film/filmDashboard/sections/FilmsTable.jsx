@@ -8,6 +8,9 @@ import { GENRE_NAMES, getGenreColor } from "../../../../utils/mappers/genre";
 import { timeToMinutes } from "../../../../utils/convertors/time";
 
 const MovieRow = ({ film }) => {
+    console.log(film);
+    
+
     return (
         <tr className="hover:bg-gray-50">
             <td className="px-6 py-4 overflow-hidden whitespace-nowrap text-ellipsis">

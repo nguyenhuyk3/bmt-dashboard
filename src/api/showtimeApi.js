@@ -16,7 +16,7 @@ const showtimeApi = {
     },
     addShowtime: async (request, accessToken) => {
         const response = await axiosClient.post(
-            "/showtime",
+            "/showtime/add",
             request,
             {
                 headers: {
@@ -29,7 +29,7 @@ const showtimeApi = {
     },
     findShowtimesByAuditoriumIdAndShowDate: async (auditoriumId, showDate, accessToken) => {
         const response = await axiosClient.get(
-            `/showtime/find-by-auditorium-id-and-by-showdate`,
+            `/showtime/find-showtimes-by-auditorium-id-and-by-showdate`,
             {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`,

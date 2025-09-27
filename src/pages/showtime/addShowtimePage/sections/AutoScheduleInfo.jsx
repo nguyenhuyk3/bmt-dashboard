@@ -2,7 +2,7 @@ const AutoScheduleInfo = ({ isValidSchedule = true }) => {
     return (
         <div className="p-6 border-2 border-green-200 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl">
             <h2 className="flex items-center mb-4 text-2xl font-semibold text-gray-800">
-                ⏰ Thông Tin Tự Động
+                Thông Tin Tự Động
             </h2>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="p-4 bg-white rounded-lg">

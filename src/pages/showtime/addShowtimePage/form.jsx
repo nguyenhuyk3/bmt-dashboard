@@ -83,7 +83,7 @@ const AddShowtimeForm = () => {
     return (
         <div className="max-w-4xl mx-auto">
             <FormHeader />
-            <div className="p-8 shadow-xl bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl">
+            <div className="p-8 shadow-xl bg-amber-50 rounded-2xl">
                 <div className="space-y-8">
                     <FilmSelector
                         films={films}

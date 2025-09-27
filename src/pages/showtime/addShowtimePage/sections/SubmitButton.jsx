@@ -19,7 +19,7 @@ const SubmitButton = ({ onSubmit, disabled = false, loading = false }) => {
                         Đang tạo...
                     </span>
                 ) : (
-                    '✨ Tạo Suất Chiếu'
+                    'Tạo Suất Chiếu'
                 )}
             </button>
         </div>

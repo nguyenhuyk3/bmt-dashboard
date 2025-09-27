@@ -32,7 +32,7 @@ const FilmSelector = ({ films, value, onChange }) => {
             {/* Custom Movie Selector */}
             <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-2xl">
                 <h2 className="flex items-center mb-6 text-2xl font-semibold text-gray-800">
-                    🎭 Chọn Phim
+                    Chọn Phim
                 </h2>
                 <div className="relative" ref={dropdownRef}>
                     <label htmlFor="selectFilm" className="block mb-3 text-sm font-medium text-gray-700 hover:cursor-pointer">
@@ -49,7 +49,7 @@ const FilmSelector = ({ films, value, onChange }) => {
                             <div className="flex items-center space-x-4">
                                 <div className="relative">
                                     <img
-                                        src={selectedMovie.poster}
+                                        src={selectedMovie.posterUrl}
                                         alt={selectedMovie.title}
                                         className="object-cover w-12 h-16 rounded-lg shadow-md"
                                     />
@@ -158,7 +158,7 @@ const FilmSelector = ({ films, value, onChange }) => {
                     <h3 className="mb-4 text-xl font-semibold">🎯 Phim đã chọn</h3>
                     <div className="flex items-center space-x-4">
                         <img
-                            src={selectedMovie.poster}
+                            src={selectedMovie.posterUrl}
                             alt={selectedMovie.title}
                             className="object-cover w-20 rounded-lg shadow-lg h-28"
                         />

@@ -37,7 +37,7 @@ const CinemaSelector = ({ value, onChange, cinemas }) => {
         <div className="w-full mx-auto" ref={dropdownRef}>
             <div className="p-6 bg-white border border-gray-100 shadow-lg rounded-2xl">
                 <h2 className="flex items-center mb-4 text-2xl font-semibold text-gray-800">
-                    🏢 Chọn Rạp Chiếu
+                    Chọn Rạp Chiếu
                 </h2>
                 <div className="relative">
                     <label htmlFor="cinema" className="block mb-3 text-sm font-medium text-gray-700 hover:cursor-pointer">
