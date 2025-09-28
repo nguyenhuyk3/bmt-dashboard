@@ -4,3 +4,4 @@ export { default as filmProfessionalApi } from "./filmProfessionalApi";
 export { default as cinemaApi } from "./cinemaApi";
 export { default as auditoriumApi } from "./auditoriumApi";
 export { default as showtimeApi } from "./showtimeApi";
+export { default as showtimeSeatApi } from "./showtimeSeatApi";

@@ -2,15 +2,12 @@ import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 
 import {
-    getLatestShowtimeByAuditoriumIdAndByShowDateRequest,
-    getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
-    addShowtimeRequest,
-    addShowtimeSuccess,
-    findShowtimesByAuditoriumIdAndShowDateRequest,
-    findShowtimesByAuditoriumIdAndShowDateSuccess,
+    getLatestShowtimeByAuditoriumIdAndByShowDateRequest, getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
+    addShowtimeRequest, addShowtimeSuccess,
+    findShowtimesByAuditoriumIdAndShowDateRequest, findShowtimesByAuditoriumIdAndShowDateSuccess,
+    releaseShowtimeSuccess, releaseShowtimeRequest,
+    findAllReleasedShowtimeByAuditoriumIdRequest, findAllReleasedShowtimeByAuditoriumIdSuccess,
     performShowtimeRequestFailure,
-    releaseShowtimeSuccess,
-    releaseShowtimeRequest
 } from "../slices/showtimeSlice";
 import { showtimeApi } from "../../api/index";
 import { formatToHHmm } from "../../utils/convertors/time";
@@ -88,6 +85,21 @@ function* handleReleaseShowtime(action) {
     }
 }
 
+function* handleFindAllReleasedShowtimeByAuditoriumId(action) {
+    try {
+        const accessToken = localStorage.getItem(import.meta.env.VITE_ACCESS_TOKEN);
+        const response = yield call(
+            showtimeApi.findAllReleasedShowtimeByAuditoriumId,
+            action.payload,
+            accessToken
+        );    
+
+        yield put(findAllReleasedShowtimeByAuditoriumIdSuccess(response));
+    } catch (error) {
+        yield put(performShowtimeRequestFailure(error.message));
+    }
+}
+
 export default function* showtimeSaga() {
     yield takeLatest(
         getLatestShowtimeByAuditoriumIdAndByShowDateRequest.type,
@@ -98,5 +110,7 @@ export default function* showtimeSaga() {
         findShowtimesByAuditoriumIdAndShowDateRequest.type,
         handleFindShowtimesByAuditoriumIdAndShowDate
     );
-    yield takeLatest(releaseShowtimeRequest.type, handleReleaseShowtime)
+    yield takeLatest(releaseShowtimeRequest.type, handleReleaseShowtime);
+    yield takeLatest(findAllReleasedShowtimeByAuditoriumIdRequest.type,
+        handleFindAllReleasedShowtimeByAuditoriumId)
 }

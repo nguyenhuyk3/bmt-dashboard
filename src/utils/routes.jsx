@@ -6,13 +6,15 @@ import FilmDashboard from "../pages/film/filmDashboard/filmDashboard";
 import EditFilmPage from "../pages/film/editFilmpage/page";
 import AddShowtimePage from "../pages/showtime/addShowtimePage/page";
 import ReleaseShowtimePage from "../pages/showtime/releaseShowtimePage/page";
+import DisplayShowtimeSeatPage from "../pages/showtimeSeat/displayShowtimeSeat/page";
 
 export const LOGIN = "/login";
 export const DEFAULT = "/";
 export const FILM_ADD = "film/add";
 export const FILL_EDIT = "film/edit/:id";
 export const SHOWTIME_ADD = "showtime/add";
-export const SHOWTIME_RELEASE = "showtime/release"
+export const SHOWTIME_RELEASE = "showtime/release";
+export const SHOWTIME_SEAT_DISPLAY = "showtime-seat/display";
 
 const ROUTES = [
     {
@@ -46,6 +48,10 @@ const ROUTES = [
             {
                 path: SHOWTIME_RELEASE,
                 element: <ReleaseShowtimePage />
+            },
+            {
+                path: SHOWTIME_SEAT_DISPLAY,
+                element: <DisplayShowtimeSeatPage />
             }
         ],
     },

@@ -44,6 +44,15 @@ const showtimeSlice = createSlice({
         releaseShowtimeSuccess: (state) => {
             state.loading = false;
         },
+        findAllReleasedShowtimeByAuditoriumIdRequest: (state) => {
+            state.loading = true;
+            state.error = null;
+            state.showtimes = [];
+        },
+        findAllReleasedShowtimeByAuditoriumIdSuccess: (state, action) => {
+            state.loading = false;
+            state.showtimes = action.payload;
+        },
         performShowtimeRequestFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
@@ -52,14 +61,11 @@ const showtimeSlice = createSlice({
 });
 
 export const {
-    getLatestShowtimeByAuditoriumIdAndByShowDateRequest,
-    getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
-    addShowtimeRequest,
-    addShowtimeSuccess,
-    findShowtimesByAuditoriumIdAndShowDateRequest,
-    findShowtimesByAuditoriumIdAndShowDateSuccess,
-    releaseShowtimeRequest,
-    releaseShowtimeSuccess,
+    getLatestShowtimeByAuditoriumIdAndByShowDateRequest, getLatestShowtimeByAuditoriumIdAndByShowDateSuccess,
+    addShowtimeRequest, addShowtimeSuccess,
+    findShowtimesByAuditoriumIdAndShowDateRequest, findShowtimesByAuditoriumIdAndShowDateSuccess,
+    releaseShowtimeRequest, releaseShowtimeSuccess,
+    findAllReleasedShowtimeByAuditoriumIdRequest, findAllReleasedShowtimeByAuditoriumIdSuccess,
     performShowtimeRequestFailure
 } = showtimeSlice.actions;
 

@@ -7,7 +7,8 @@ import {
     filmSlice,
     cinemaSlice,
     auditoriumSlice,
-    showtimeSlice
+    showtimeSlice,
+    showtimeSeatSlice
 } from '../features/slices/index';
 import rootSaga from '../features/sagas/index';
 
@@ -19,7 +20,8 @@ const store = configureStore({
         film: filmSlice,
         cinema: cinemaSlice,
         auditorium: auditoriumSlice,
-        showtime: showtimeSlice
+        showtime: showtimeSlice,
+        showtimeSeat: showtimeSeatSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),

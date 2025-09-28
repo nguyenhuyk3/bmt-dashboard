@@ -15,3 +15,6 @@ export * from "./auditoriumSlice";
 
 export { default as showtimeSlice } from "./showtimeSlice";
 export * from "./showtimeSlice";
+
+export { default as showtimeSeatSlice } from "./showtimeSeatSlice";
+export * from "./showtimeSeatSlice";

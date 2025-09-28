@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { SIZE_OF_PAGINATION } from "../../utils/constants";
 
 const initialState = {

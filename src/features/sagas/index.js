@@ -6,6 +6,7 @@ import filmSaga from "./filmSaga";
 import cinemaSaga from "./cinemaSaga";
 import auditoriumSaga from "./auditoriumSaga";
 import showtimeSaga from "./showtimeSaga";
+import showtimeSeatSaga from "./showtimeSeatSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -15,5 +16,6 @@ export default function* rootSaga() {
         cinemaSaga(),
         auditoriumSaga(),
         showtimeSaga(),
+        showtimeSeatSaga(),
     ]);
 }

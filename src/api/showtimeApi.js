@@ -55,6 +55,21 @@ const showtimeApi = {
         );
 
         return response.data.result;
+    },
+    findAllReleasedShowtimeByAuditoriumId: async (auditoriumId, accessToken) => {
+        const response = await axiosClient.get(
+            "/showtime/find-all-realesed-showtimes-by-auditorium-id",
+            {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                },
+                params: {
+                    auditoriumId,
+                },
+            }
+        );
+
+        return response.data.result;
     }
 };
 
